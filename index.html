@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全方位健康急救與車禍指南（完整精裝版）</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '"Noto Sans TC"', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .young-btn { min-height: 52px; font-size: 1rem; font-weight: 700; border-radius: 0.85rem; transition: all 0.2s ease; }
+    </style>
+</head>
+<body class="text-slate-900 antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- 首次開啟歡迎導覽彈跳視窗 -->
+    <div id="welcomeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 animate-fade-in">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-teal-700 text-white flex items-center justify-center text-xl font-bold shadow-md">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 text-lg">歡迎使用全方位健康急救指南</h3>
+                    <p class="text-xs font-semibold text-teal-700">車禍全攻略・超清晰穴位・多國常備藥品</p>
+                </div>
+            </div>
+
+            <div class="text-slate-600 text-xs space-y-2 mb-4 leading-relaxed bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+                <p><strong>🎯 網站目的：</strong>協助您在面對車禍突發狀況、傷口包紮、身體不明不適、疼痛穴位按摩及藥局藥品選購時，能快速獲得最正確的指引與國際對照。</p>
+                <p><strong>💡 使用方式：</strong>您可透過首頁的搜尋框快速找尋任何症狀與藥品，或是點擊各大專區功能按鈕深入查詢。本平台資料僅供日常健康參考，緊急時請撥打 119。</p>
+            </div>
+
+            <div class="mb-5">
+                <h4 class="font-bold text-slate-900 text-xs mb-2 flex items-center"><i class="fa-solid fa-list-check text-teal-700 mr-1.5"></i> 導覽：各按鈕功能一覽</h4>
+                <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                    <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                        <span class="font-bold text-teal-800"><i class="fa-solid fa-house mr-1"></i> 首頁指引</span>
+                        <span class="text-slate-600 text-[11px]">返回首頁並瀏覽各項急救與健康專區。</span>
+                    </div>
+                    <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                        <span class="font-bold text-orange-800"><i class="fa-solid fa-car-burst mr-1"></i> 車禍全攻略</span>
+                        <span class="text-slate-600 text-[11px]">事故現場自保、蒐證與保險理賠完整步驟。</span>
+                    </div>
+                    <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                        <span class="font-bold text-purple-800"><i class="fa-solid fa-stethoscope mr-1"></i> 不知道病因?</span>
+                        <span class="text-slate-600 text-[11px]">點選身體部位或直接打字分析可能病因。</span>
+                    </div>
+                    <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                        <span class="font-bold text-pink-800"><i class="fa-solid fa-hand-holding-medical mr-1"></i> 疼痛穴位按摩</span>
+                        <span class="text-slate-600 text-[11px]">全身上下穴位、指腹特寫與施力對照圖解。</span>
+                    </div>
+                    <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                        <span class="font-bold text-cyan-800"><i class="fa-solid fa-heart-pulse mr-1"></i> 慢性病三高</span>
+                        <span class="text-slate-600 text-[11px]">高血壓與糖尿病日常健康保健與監測。</span>
+                    </div>
+                    <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                        <span class="font-bold text-indigo-800"><i class="fa-solid fa-book-medical mr-1"></i> 疾病大百科</span>
+                        <span class="text-slate-600 text-[11px]">內外科急症、盲腸炎與五十肩詳細說明。</span>
+                    </div>
+                    <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                        <span class="font-bold text-amber-800"><i class="fa-solid fa-pills mr-1"></i> 常備藥品</span>
+                        <span class="text-slate-600 text-[11px]">超過 20 種常備藥品與 4 個備用品牌多國對照。</span>
+                    </div>
+                    <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                        <span class="font-bold text-indigo-700"><i class="fa-solid fa-camera-retro mr-1"></i> AI 拍照查詢</span>
+                        <span class="text-slate-600 text-[11px]">上傳傷口或藥品照片取得 AI 智慧分析與建議。</span>
+                    </div>
+                    <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                        <span class="font-bold text-teal-800"><i class="fa-solid fa-weight-scale mr-1"></i> 計算 BMI</span>
+                        <span class="text-slate-600 text-[11px]">輸入身高體重快速計算身體質量指數。</span>
+                    </div>
+                    <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                        <span class="font-bold text-slate-800"><i class="fa-solid fa-hospital mr-1"></i> 大醫院查詢</span>
+                        <span class="text-slate-600 text-[11px]">全台醫學中心院長與權威醫師一鍵撥號。</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2 mb-5">
+                <input type="checkbox" id="dontShowAgainCheck" class="w-4 h-4 text-teal-600 rounded border-slate-300 focus:ring-teal-500 cursor-pointer">
+                <label for="dontShowAgainCheck" class="text-xs font-medium text-slate-700 cursor-pointer select-none">不再顯示歡迎導覽說明</label>
+            </div>
+
+            <button onclick="closeWelcomeModal()" class="w-full py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs rounded-xl shadow-md transition">
+                開始使用指南 <i class="fa-solid fa-arrow-right ml-1"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 頂部現代導覽列 -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchMainView('home')">
+                <div class="w-10 h-10 rounded-xl bg-teal-700 flex items-center justify-center text-white font-bold text-lg shadow-md">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-base text-slate-900 tracking-tight">健康急救與車禍指南</h1>
+                    <p class="text-xs font-semibold text-teal-700">車禍全攻略・超清晰穴位・多國藥品</p>
+                </div>
+            </div>
+
+            <!-- 緊急求助按鈕 -->
+            <a href="tel:119" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-black text-xs rounded-xl shadow flex items-center space-x-1.5 animate-pulse">
+                <i class="fa-solid fa-phone-volume text-sm"></i>
+                <span>叫 119</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- 主要內容區 -->
+    <main class="max-w-3xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- 視圖：首頁指引 -->
+        <div id="view-home" class="view-section">
+            <!-- 功能按鈕選單區塊 -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-4">
+                <button onclick="switchMainView('home')" class="young-btn bg-teal-700 hover:bg-teal-800 text-white flex items-center justify-center space-x-2 px-3 py-3 shadow-md">
+                    <i class="fa-solid fa-house"></i>
+                    <span>首頁指引</span>
+                </button>
+                <button onclick="switchMainView('caraccident')" class="young-btn bg-orange-600 hover:bg-orange-700 text-white flex items-center justify-center space-x-2 px-3 py-3 shadow-md">
+                    <i class="fa-solid fa-car-burst"></i>
+                    <span>車禍全攻略</span>
+                </button>
+                <button onclick="switchMainView('symptomChecker')" class="young-btn bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center space-x-2 px-3 py-3 shadow-md">
+                    <i class="fa-solid fa-stethoscope"></i>
+                    <span>不知道病因?</span>
+                </button>
+                <button onclick="switchMainView('acupressure')" class="young-btn bg-pink-600 hover:bg-pink-700 text-white flex items-center justify-center space-x-2 px-3 py-3 shadow-md">
+                    <i class="fa-solid fa-hand-holding-medical"></i>
+                    <span>疼痛穴位按摩</span>
+                </button>
+                <button onclick="switchMainView('chronic')" class="young-btn bg-cyan-700 hover:bg-cyan-800 text-white flex items-center justify-center space-x-2 px-3 py-3 shadow-md">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                    <span>慢性病三高</span>
+                </button>
+                <button onclick="switchMainView('diseases')" class="young-btn bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center space-x-2 px-3 py-3 shadow-md">
+                    <i class="fa-solid fa-book-medical"></i>
+                    <span>疾病大百科</span>
+                </button>
+                <button onclick="switchMainView('pharmacy')" class="young-btn bg-amber-600 hover:bg-amber-700 text-white flex items-center justify-center space-x-2 px-3 py-3 shadow-md">
+                    <i class="fa-solid fa-pills"></i>
+                    <span>常備藥品</span>
+                </button>
+                <button onclick="switchMainView('aiVision')" class="young-btn bg-indigo-700 hover:bg-indigo-800 text-white flex items-center justify-center space-x-2 px-3 py-3 shadow-md">
+                    <i class="fa-solid fa-camera-retro"></i>
+                    <span>AI 拍照查詢</span>
+                </button>
+                <button onclick="switchMainView('bmi')" class="young-btn bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center space-x-2 px-3 py-3 shadow-md">
+                    <i class="fa-solid fa-weight-scale"></i>
+                    <span>計算 BMI</span>
+                </button>
+                <button onclick="switchMainView('hospitals')" class="young-btn bg-slate-800 hover:bg-slate-900 text-white flex items-center justify-center space-x-2 px-3 py-3 shadow-md col-span-2">
+                    <i class="fa-solid fa-hospital"></i>
+                    <span>大醫院與權威醫師查詢</span>
+                </button>
+            </div>
+
+            <!-- 智慧搜尋區塊 -->
+            <div class="bg-gradient-to-br from-teal-800 via-slate-900 to-teal-950 rounded-2xl p-5 text-white mb-6 shadow-lg text-center">
+                <h2 class="text-lg sm:text-xl font-bold mb-1">請問您哪裡不舒服？</h2>
+                <p class="text-teal-100 text-xs mb-3 font-medium">輸入關鍵字（例如：車禍、擦傷、瘀青、腸胃炎、五十肩、頭痛...）</p>
+                
+                <div class="relative max-w-xl mx-auto">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    </span>
+                    <input type="text" id="homeSearchInput" oninput="handleHomeSearch(this.value)" placeholder="輸入：車禍、擦傷、瘀青、腸胃炎..." class="w-full pl-10 pr-4 py-3 bg-white text-slate-900 rounded-xl shadow placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-400 font-medium text-xs transition">
+                </div>
+            </div>
+
+            <!-- 搜尋結果區 -->
+            <div id="home-search-results-area" class="mb-6 hidden">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-slate-900 text-base">搜尋結果（點擊項目直接跳轉對應頁面）</h3>
+                    <button onclick="clearHomeSearch()" class="px-3 py-1 bg-slate-200 text-slate-700 rounded-lg font-semibold text-xs">清除搜尋</button>
+                </div>
+                <div id="home-search-grid" class="space-y-3"></div>
+            </div>
+
+            <div id="default-home-content">
+                <!-- 快速分類捷徑 -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                    <button onclick="switchMainView('caraccident')" class="p-3.5 bg-white rounded-xl border border-slate-200 text-left hover:border-orange-500 shadow-sm transition">
+                        <i class="fa-solid fa-car-burst text-orange-500 text-base mb-1"></i>
+                        <h4 class="font-bold text-slate-900 text-sm">車禍全攻略</h4>
+                        <p class="text-slate-500 text-xs mt-0.5">現場處理與理賠保險</p>
+                    </button>
+                    <button onclick="switchMode('modeA')" class="p-3.5 bg-white rounded-xl border border-slate-200 text-left hover:border-teal-500 shadow-sm transition">
+                        <i class="fa-solid fa-band-aid text-teal-500 text-base mb-1"></i>
+                        <h4 class="font-bold text-slate-900 text-sm">傷口與關節</h4>
+                        <p class="text-slate-500 text-xs mt-0.5">擦傷、瘀青、五十肩</p>
+                    </button>
+                    <button onclick="switchMode('modeB')" class="p-3.5 bg-white rounded-xl border border-slate-200 text-left hover:border-teal-500 shadow-sm transition">
+                        <i class="fa-solid fa-stethoscope text-indigo-500 text-base mb-1"></i>
+                        <h4 class="font-bold text-slate-900 text-sm">內科不適</h4>
+                        <p class="text-slate-500 text-xs mt-0.5">腸胃炎與發燒感冒</p>
+                    </button>
+                    <button onclick="switchMode('modeC')" class="p-3.5 bg-white rounded-xl border border-slate-200 text-left hover:border-teal-500 shadow-sm transition">
+                        <i class="fa-solid fa-heart-pulse text-rose-500 text-base mb-1"></i>
+                        <h4 class="font-bold text-slate-900 text-sm">心血管急症</h4>
+                        <p class="text-slate-500 text-xs mt-0.5">心肌梗塞中風</p>
+                    </button>
+                </div>
+
+                <!-- 詳細急救指引卡片 -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 mb-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-slate-900 text-base" id="categoryBarTitle">選擇詳細急救指引</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4" id="subCategoryTabs"></div>
+                    <div id="content-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 視圖：車禍全攻略專區 -->
+        <div id="view-caraccident" class="view-section hidden">
+            <h2 class="text-lg font-bold text-slate-900 mb-1">🚗 車禍事故處理與保險理賠全攻略</h2>
+            <p class="text-slate-500 text-xs mb-4">從事故發生當下、蒐證報警、就醫驗傷到後續保險理賠的完整步驟指南。</p>
+            
+            <div class="space-y-4">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-orange-200">
+                    <h3 class="font-bold text-orange-800 text-sm mb-2 flex items-center"><i class="fa-solid fa-triangle-exclamation mr-2"></i> 階段一：事故發生第一時間（黃金自保）</h3>
+                    <div class="space-y-2 text-xs text-slate-700">
+                        <div class="p-2.5 bg-orange-50 rounded-xl border border-orange-100">
+                            <strong>1. 確保安全防範二次追撞：</strong>保持冷靜，立刻開啟雙黃燈。若車輛能動且無重大傷亡，拍照後移至路邊；若無法移動，於車後 50-100 公尺放置三角標誌。
+                        </div>
+                        <div class="p-2.5 bg-orange-50 rounded-xl border border-orange-100">
+                            <strong>2. 撥打 119 與 110：</strong>有人員受傷立刻叫救護車；並一定要通報警察局製作交通事故紀錄，切勿私下和解。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-orange-200">
+                    <h3 class="font-bold text-orange-800 text-sm mb-2 flex items-center"><i class="fa-solid fa-camera mr-2"></i> 階段二：現場蒐證與筆錄注意事項</h3>
+                    <div class="space-y-2 text-xs text-slate-700">
+                        <div class="p-2.5 bg-orange-50 rounded-xl border border-orange-100">
+                            <strong>1. 多角度拍照錄影：</strong>拍攝雙方車輛全景、撞擊點、地上煞車痕、散落物及號誌。
+                        </div>
+                        <div class="p-2.5 bg-orange-50 rounded-xl border border-orange-100">
+                            <strong>2. 尋找目擊證人與監視器：</strong>詢問附近店家有無監視器畫面，或留下目擊證人聯絡電話。
+                        </div>
+                        <div class="p-2.5 bg-orange-50 rounded-xl border border-orange-100">
+                            <strong>3. 警方筆錄誠實陳述：</strong>製作筆錄時據實以告，切勿誇大或說謊，並索取「道路交通事故當事人登記聯單」。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-orange-200">
+                    <h3 class="font-bold text-orange-800 text-sm mb-2 flex items-center"><i class="fa-solid fa-hospital-user mr-2"></i> 階段三：就醫驗傷與保險理賠</h3>
+                    <div class="space-y-2 text-xs text-slate-700">
+                        <div class="p-2.5 bg-orange-50 rounded-xl border border-orange-100">
+                            <strong>1. 黃金 24 小時內就醫驗傷：</strong>即使當下只有輕微碰撞或驚嚇，也必須去醫院急診，並主動向醫師告知是「車禍受傷」，索取正式「診斷證明書」與「醫療費用收據」。
+                        </div>
+                        <div class="p-2.5 bg-orange-50 rounded-xl border border-orange-100">
+                            <strong>2. 體傷與財損理賠申請：</strong>備妥診斷書、收據、修車發票、薪資證明等，向對方保險公司或強制險申請理賠。若有爭議可申請鄉鎮市調解委員會調解。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 視圖：不知道是什麼病？（互動式症狀導引） -->
+        <div id="view-symptomChecker" class="view-section hidden">
+            <h2 class="text-lg font-bold text-slate-900 mb-1">🩺 不知道是什麼病？智慧症狀引導（選項與打字雙向查詢）</h2>
+            <p class="text-slate-500 text-xs mb-4">您可以點選下方身體部位，或直接在輸入框打字描述您的不舒服，系統將立即引導您可能的病因與建議科別。</p>
+            
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <!-- 打字搜尋症狀 -->
+                <div>
+                    <label class="block font-bold text-slate-800 text-xs mb-1">⌨️ 直接打字輸入您的症狀（例如：頭暈、胸悶、右下腹痛、關節痛...）：</label>
+                    <input type="text" id="symptomTextInput" oninput="handleCustomSymptomSearch(this.value)" placeholder="請輸入您哪裡不舒服..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl font-medium text-xs focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+
+                <div class="relative flex py-2 items-center">
+                    <div class="flex-grow border-t border-slate-200"></div>
+                    <span class="flex-shrink mx-4 text-slate-400 text-[11px] font-bold">或者點選下方部位與選項</span>
+                    <div class="flex-grow border-t border-slate-200"></div>
+                </div>
+
+                <label class="block font-bold text-slate-800 text-xs">請選擇您最主要的身體不適部位：</label>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    <button onclick="selectBodyPart('head')" class="p-3 bg-slate-50 hover:bg-purple-50 border rounded-xl text-xs font-bold text-slate-800 text-left transition">🧠 頭部 / 腦神經 / 暈眩</button>
+                    <button onclick="selectBodyPart('chest')" class="p-3 bg-slate-50 hover:bg-purple-50 border rounded-xl text-xs font-bold text-slate-800 text-left transition">🫀 胸口 / 心臟 / 呼吸喘</button>
+                    <button onclick="selectBodyPart('abdomen')" class="p-3 bg-slate-50 hover:bg-purple-50 border rounded-xl text-xs font-bold text-slate-800 text-left transition">🤢 腹部 / 腸胃 / 絞痛</button>
+                    <button onclick="selectBodyPart('joint')" class="p-3 bg-slate-50 hover:bg-purple-50 border rounded-xl text-xs font-bold text-slate-800 text-left transition">🦾 四肢 / 肩膀五十肩 / 關節</button>
+                    <button onclick="selectBodyPart('skin')" class="p-3 bg-slate-50 hover:bg-purple-50 border rounded-xl text-xs font-bold text-slate-800 text-left transition">🩹 皮膚 / 擦傷 / 瘀青</button>
+                    <button onclick="selectBodyPart('fever')" class="p-3 bg-slate-50 hover:bg-purple-50 border rounded-xl text-xs font-bold text-slate-800 text-left transition">🌡️ 全身發燒 / 疲倦感冒</button>
+                </div>
+
+                <div id="symptomResultArea" class="hidden mt-4 p-4 bg-purple-50 rounded-xl border border-purple-200 space-y-2">
+                    <h4 class="font-bold text-purple-900 text-sm" id="symptomResultTitle">分析結果</h4>
+                    <div id="symptomResultDesc" class="text-xs text-slate-700 leading-relaxed"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 視圖：疼痛穴位按摩與超清晰擬真圖解 -->
+        <div id="view-acupressure" class="view-section hidden">
+            <h2 class="text-lg font-bold text-slate-900 mb-1">✋ 全身體系穴位按摩與「一目了然定位圖解」</h2>
+            <p class="text-slate-500 text-xs mb-3">透過全身正面與背面骨骼脈絡定位對照圖，讓您一眼就能看出各個穴位在身體的絕對位置，並搭配手指特寫與正確/錯誤手法對照！</p>
+            
+            <!-- 全身穴位對照導覽圖（正面與背面示意） -->
+            <div class="bg-gradient-to-br from-slate-900 to-teal-950 p-5 rounded-2xl text-white mb-5 shadow-md">
+                <h3 class="font-bold text-sm mb-3 text-teal-300 flex items-center"><i class="fa-solid fa-map-location-dot mr-2"></i> 🗺️ 全身 12 大關鍵穴位快速對照地圖</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                    <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
+                        <div class="font-bold text-teal-300 mb-2 border-b border-slate-700 pb-1">👤 上半身與頭面部（正面/側面）</div>
+                        <ul class="space-y-1.5 text-slate-300">
+                            <li>• <strong class="text-white">百會穴：</strong>頭頂正中央（提神醒腦、失眠）</li>
+                            <li>• <strong class="text-white">印堂穴：</strong>兩眉頭正中央（頭痛、鼻塞）</li>
+                            <li>• <strong class="text-white">合谷穴：</strong>手背虎口骨縫（牙痛、感冒）</li>
+                            <li>• <strong class="text-white">內關穴：</strong>前臂內側三橫指（胃痛、暈車）</li>
+                            <li>• <strong class="text-white">曲池穴：</strong>手肘橫紋外側（手肘痛、消炎）</li>
+                            <li>• <strong class="text-white">膻中穴：</strong>兩乳頭連線中點（胸悶、咳嗽）</li>
+                            <li>• <strong class="text-white">中脘穴：</strong>肚臍上方 4 寸（消化不良、胃脹）</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
+                        <div class="font-bold text-teal-300 mb-2 border-b border-slate-700 pb-1">👤 下半身與背部（背面/四肢）</div>
+                        <ul class="space-y-1.5 text-slate-300">
+                            <li>• <strong class="text-white">風池穴：</strong>後頸大筋外側凹陷（落枕、頸椎僵硬）</li>
+                            <li>• <strong class="text-white">腎俞穴：</strong>第二腰椎旁開 1.5 寸（腰痠背痛）</li>
+                            <li>• <strong class="text-white">委中穴：</strong>膝蓋後方膕窩正中（膝蓋僵硬、下肢水腫）</li>
+                            <li>• <strong class="text-white">足三里：</strong>外膝眼下四橫指（調理腸胃、消除疲勞）</li>
+                            <li>• <strong class="text-white">太衝穴：</strong>足背第一二趾骨凹陷（情緒焦慮、頭痛）</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 穴位搜尋框 -->
+            <div class="mb-4">
+                <input type="text" id="acupressureSearchInput" oninput="filterAcupressure()" placeholder="🔍 搜尋疼痛症狀或穴位名稱（例如：頭痛、胃痛、失眠、合谷...）" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl font-medium text-xs focus:outline-none focus:ring-2 focus:ring-pink-500 shadow-sm">
+            </div>
+
+            <div id="acupressure-list-container" class="space-y-4"></div>
+        </div>
+
+        <!-- 視圖：三高與慢性病 -->
+        <div id="view-chronic" class="view-section hidden">
+            <h2 class="text-lg font-bold text-slate-900 mb-1">📈 三高與心血管慢性病</h2>
+            <p class="text-slate-500 text-xs mb-4">高血壓、糖尿病與高血脂之日常保健與自我監測。</p>
+            <div id="chronic-list-container" class="space-y-3"></div>
+        </div>
+
+        <!-- 視圖：疾病大百科 -->
+        <div id="view-diseases" class="view-section hidden">
+            <h2 class="text-lg font-bold text-slate-900 mb-1">📖 內外科疾病大百科</h2>
+            <p class="text-slate-500 text-xs mb-3">涵蓋內科、外科急症、五十肩、腸胃炎、腦神經與各類系統疾病。</p>
+            <input type="text" id="diseaseSearchInput" oninput="filterDiseases()" placeholder="快速搜尋內外科疾病（例如：五十肩、盲腸炎、膽結石...）" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl font-medium text-xs mb-4 focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <div id="disease-list-container" class="space-y-3"></div>
+        </div>
+
+        <!-- 視圖：常備藥品對照 -->
+        <div id="view-pharmacy" class="view-section hidden">
+            <h2 class="text-lg font-bold text-slate-900 mb-1">💊 常備藥品與品牌/備用品牌推薦</h2>
+            <p class="text-slate-500 text-xs mb-3">收錄推薦品牌，若無該品牌則提供 4 個優質同成分備用品牌，並附帶中、英、日、韓對照。</p>
+            <input type="text" id="pharmacySearchInput" oninput="filterPharmacy()" placeholder="輸入藥品名稱或主成分（支援中、英、韓關鍵字）..." class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl font-medium text-xs mb-4 focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <div id="pharmacy-list-container" class="space-y-3"></div>
+        </div>
+
+        <!-- 視圖：AI 拍照查詢功能 -->
+        <div id="view-aiVision" class="view-section hidden">
+            <h2 class="text-lg font-bold text-slate-900 mb-1">📸 AI 智慧拍照與傷口/藥品辨識</h2>
+            <p class="text-slate-500 text-xs mb-4">上傳或拍攝您的傷口、皮膚狀況或藥品包裝照片，AI 將自動為您分析並提供初步衛教與建議。</p>
+            
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <div class="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:border-indigo-500 transition cursor-pointer relative" onclick="document.getElementById('aiImageInput').click()">
+                    <input type="file" id="aiImageInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+                    <div id="uploadPlaceholder">
+                        <i class="fa-solid fa-cloud-arrow-up text-3xl text-indigo-500 mb-2"></i>
+                        <h4 class="font-bold text-slate-800 text-sm mb-1">點擊上傳或拍照</h4>
+                        <p class="text-slate-400 text-xs">支援 JPG, PNG 格式（傷口、藥包、皮膚紅疹）</p>
+                    </div>
+                    <div id="imagePreviewContainer" class="hidden">
+                        <img id="previewImg" src="" alt="Preview" class="max-h-48 mx-auto rounded-xl shadow mb-2">
+                        <p class="text-xs text-indigo-600 font-bold">點擊可重新選擇照片</p>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-800 text-xs mb-1">補充說明（選填，例如：這是昨天跌倒擦傷的傷口，會痛）：</label>
+                    <input type="text" id="aiUserPrompt" placeholder="請描述您的狀況或問題..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl font-medium text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+
+                <button onclick="analyzeImageWithAI()" id="analyzeBtn" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>開始 AI 智慧分析</span>
+                </button>
+
+                <div id="aiLoading" class="hidden text-center py-6">
+                    <i class="fa-solid fa-spinner fa-spin text-2xl text-indigo-600 mb-2"></i>
+                    <p class="text-xs text-slate-600 font-medium">AI 正在仔細分析照片內容，請稍候...</p>
+                </div>
+
+                <div id="aiResultArea" class="hidden p-4 rounded-xl bg-indigo-50 border border-indigo-200 space-y-2">
+                    <h4 class="font-bold text-indigo-900 text-sm"><i class="fa-solid fa-robot mr-1.5"></i> AI 分析與建議結果</h4>
+                    <div id="aiResultText" class="text-xs text-slate-700 leading-relaxed"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 視圖：全台大醫院與權威醫師 -->
+        <div id="view-hospitals" class="view-section hidden">
+            <h2 class="text-lg font-bold text-slate-900 mb-1">🏥 全台大醫院與權威醫師查詢</h2>
+            <p class="text-slate-500 text-xs mb-3">快速尋找醫學中心、院長與知名主治醫師專長。</p>
+            <input type="text" id="doctorSearchInput" oninput="filterHospitalsByDoctorOrSpecialty()" placeholder="🔍 搜尋醫師姓名或專長（例如：心臟移植、換肝、腦瘤...）" class="w-full px-4 py-3 bg-teal-50/50 border border-teal-200 rounded-xl font-medium text-xs mb-3 focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <div class="flex flex-wrap gap-1.5 mb-4">
+                <button onclick="filterHospitalsByCity('全部')" class="px-3 py-1.5 bg-teal-700 text-white rounded-lg font-semibold text-xs">全部</button>
+                <button onclick="filterHospitalsByCity('台北市')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-semibold text-xs">台北市</button>
+                <button onclick="filterHospitalsByCity('桃園市')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-semibold text-xs">桃園市</button>
+                <button onclick="filterHospitalsByCity('台中市')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-semibold text-xs">台中市</button>
+                <button onclick="filterHospitalsByCity('台南市')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-semibold text-xs">台南市</button>
+                <button onclick="filterHospitalsByCity('高雄市')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-semibold text-xs">高雄市</button>
+            </div>
+            <div id="hospital-list-container" class="space-y-3"></div>
+        </div>
+
+        <!-- 視圖：計算 BMI -->
+        <div id="view-bmi" class="view-section hidden">
+            <h2 class="text-lg font-bold text-slate-900 mb-1">⚖️ BMI 身體質量指數計算與健康評估</h2>
+            <p class="text-slate-500 text-xs mb-4">輸入您的身高與體重，快速評估您的體位是否標準並獲得健康建議。</p>
+            
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <div>
+                    <label class="block font-bold text-slate-800 text-xs mb-1">身高 (公分 cm)：</label>
+                    <input type="number" id="bmiHeight" value="170" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl font-bold text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" oninput="calculateBMI()">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-800 text-xs mb-1">體重 (公斤 kg)：</label>
+                    <input type="number" id="bmiWeight" value="65" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl font-bold text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" oninput="calculateBMI()">
+                </div>
+
+                <button onclick="calculateBMI()" class="w-full py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs rounded-xl shadow transition">
+                    <i class="fa-solid fa-calculator mr-1"></i> 計算我的 BMI
+                </button>
+
+                <div id="bmiResultArea" class="hidden p-4 rounded-xl border space-y-2 mt-4 text-center">
+                    <h4 class="text-xs font-semibold text-slate-500">您的 BMI 計算結果</h4>
+                    <div id="bmiValueDisplay" class="text-3xl font-black text-slate-900">0.0</div>
+                    <div id="bmiStatusDisplay" class="inline-block px-3 py-1 rounded-full text-xs font-bold"></div>
+                    <p id="bmiAdviceText" class="text-xs text-slate-600 mt-2 leading-relaxed"></p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs font-medium text-slate-400">
+        <p>全方位健康急救與車禍指南・資料僅供參考，身體不適請及早就醫</p>
+    </footer>
+
+    <!-- JavaScript 資料與邏輯 -->
+    <script>
+        const medicalDatabase = {
+            modeCar: {
+                title: "車禍處理",
+                items: {
+                    carAccident: {
+                        id: "carAccident",
+                        title: "1. 車禍現場急救與完整自保",
+                        subtitle: "突發事故時的冷靜應對與完整 4 步驟。",
+                        badgeColor: "bg-orange-100 text-orange-800",
+                        badgeText: "車禍急救",
+                        keywords: ["車禍", "車禍處理", "撞車", "擦撞", "理賠", "報警", "119"],
+                        steps: [
+                            { title: "步驟一：確保人身安全與防範二次追撞", desc: "保持冷靜，若車輛尚能移動且無大礙，立刻開啟雙黃燈並將車輛移至路邊；若無法移動，立即於車後 50-100 公尺處放置三角警示牌，所有人員退至護欄外安全處。" },
+                            { title: "步驟二：檢視傷勢並撥打 119 救護車", desc: "互相檢查身上有無出血、骨折或強烈疼痛。若有人員受傷或意識不清，第一時間撥打 119 請求救護車，切勿任意搬動疑似脊椎受傷的傷患。" },
+                            { title: "步驟三：報警處理並記錄現場", desc: "撥打 110 請警方到場製作交通事故筆錄。切勿私下和解未留證據，建議用手機多角度拍攝雙方車損、撞擊位置及現場路況。" },
+                            { title: "步驟四：就醫檢查與申請驗傷單", desc: "即使當下感覺只有輕微碰撞或驚嚇，也務必前往醫院急診或門診詳細檢查，並索取正式的「診斷證明書」與「醫療收據」以利後續保險理賠。" }
+                        ],
+                        redFlags: "劇烈頭痛、腹部劇痛、呼吸困難、意識模糊。"
+                    }
+                }
+            },
+            modeA: {
+                title: "傷口與關節",
+                items: {
+                    abrasion: {
+                        id: "abrasion",
+                        title: "1. 皮膚擦傷、割傷完整分類與處置（依原因與大小）",
+                        subtitle: "針對被紙割傷、機車犁田、割傷、流血、戶外跌倒砂石嵌入之分級對照與推薦藥膏。",
+                        badgeColor: "bg-teal-100 text-teal-800",
+                        badgeText: "擦傷與割傷解析",
+                        keywords: ["被紙割傷", "割傷", "流血", "擦傷", "破皮", "傷口", "小傷口", "犁田", "柏油路"],
+                        steps: [
+                            { title: "【成因一】被紙割傷 / 辦公室日常微小割傷（血量少、刺痛）", desc: "大小：小於 1cm。處置方式：用清水或生理食鹽水沖洗乾淨，加壓止血 1-2 分鐘。護理藥膏推薦：薄塗【曼秀雷敦軟膏】或【喜療妥】保護，若有輕微紅腫可擦抗生素軟膏。" },
+                            { title: "【成因二】機車犁田 / 柏油路高速摩擦傷（面積大、深度深、含砂石）", desc: "大小：面積通常大於 5cm²。處置方式：必須至醫院或診所進行清創手術，生理食鹽水徹底沖洗並挑出異物。護理藥膏推薦：可使用【百克敏軟膏 (Bactroban)】或【使皮新軟膏 (Scinidin)】預防感染，癒合期可用【喜療疤】或【美德疤痕凝膠】。" },
+                            { title: "【成因三】運動場 / 操場紅土跌倒擦傷（中度面積、泥土細菌多）", desc: "大小：約 2-5cm²。處置方式：大量生理食鹽水清洗，確保紅土顆粒完全清除，薄塗抗生素軟膏並使用透氣無菌紗布覆蓋。" }
+                        ],
+                        redFlags: "傷口持續紅腫熱痛、流膿、發燒、或柏油/異物無法自行洗淨。"
+                    },
+                    bruise: {
+                        id: "bruise",
+                        title: "2. 瘀青（皮下出血）分級與細緻照護指南",
+                        subtitle: "依撞擊力道、深度與部位之黃金處理與化瘀時程。",
+                        badgeColor: "bg-purple-100 text-purple-800",
+                        badgeText: "瘀青深度解析",
+                        keywords: ["瘀青", "撞傷", "黑青", "皮下出血", "腫包"],
+                        steps: [
+                            { title: "【分級一】輕微表淺皮下瘀青（碰撞桌角、日常小撞擊）", desc: "特徵：面積小於 3 公分，皮膚表面僅淡淡泛紅或輕微發紫。處置：48 小時內冰敷每次 15 分鐘，48 小時後熱敷並可搭配喜療妥軟膏，約 3-5 天消散。" },
+                            { title: "【分級二】中度肌肉深層瘀血（車禍撞擊、劇烈運動碰撞）", desc: "特徵：面積大、顏色呈深紫黑色，伴隨肌肉緊繃僵硬與按壓劇痛。處置：前 72 小時嚴格冰敷並彈性繃帶輕度加壓；72 小時後改為溫熱敷搭配輕柔推拿。" }
+                        ],
+                        redFlags: "瘀青範圍持續倍數擴大、壓痛劇烈且肢體出現麻木、冰冷或喪失活動能力。"
+                    },
+                    frozenShoulder: {
+                        id: "frozenShoulder",
+                        title: "3. 五十肩（沾黏性肩關節囊炎）照護",
+                        subtitle: "肩膀僵硬疼痛的日常緩解與復健步驟。",
+                        badgeColor: "bg-blue-100 text-blue-800",
+                        badgeText: "五十肩照護",
+                        keywords: ["五十肩", "肩膀痛", "手臂舉不高", "肩膀僵硬", "關節痛"],
+                        steps: [
+                            { title: "步驟一：急性期疼痛控制與休息", desc: "當肩膀劇痛發炎時，避免搬重物或進行過度拉扯的劇烈運動，可遵醫囑局部冰敷或服用消炎止痛藥減輕發炎。" },
+                            { title: "步驟二：溫熱敷放鬆緊繃肌肉", desc: "每天早晚使用熱敷袋或洗熱水澡時讓水柱沖淋肩膀 15 分鐘，放鬆肩膀周圍緊繃的肌肉與沾黏的關節囊。" }
+                        ],
+                        redFlags: "肩膀完全無法抬起、夜間痛醒無法入眠、伴隨手臂無力麻木。"
+                    }
+                }
+            },
+            modeB: {
+                title: "內科不適",
+                items: {
+                    gastroenteritis: {
+                        id: "gastroenteritis",
+                        title: "1. 急性腸胃炎（腹瀉嘔吐）照護",
+                        subtitle: "上吐下瀉時的飲食調整與補水步驟。",
+                        badgeColor: "bg-emerald-100 text-emerald-800",
+                        badgeText: "腸胃炎護理",
+                        keywords: ["腸胃炎", "腹瀉", "拉肚子", "嘔吐", "上吐下瀉", "胃痛"],
+                        steps: [
+                            { title: "步驟一：禁食休息與少量多次補水", desc: "嘔吐頻繁時先禁食 1-2 小時讓腸胃休息。之後採「少量多次」方式補充稀釋的運動飲料或電解質水，避免脫水。" },
+                            { title: "步驟二：採取清淡低渣飲食（BRAT原則）", desc: "症狀緩解後可食用白粥、吐司、香蕉、蘋果泥或水煮白麵條，避免油膩、辛辣、乳製品及高纖食物。" }
+                        ],
+                        redFlags: "嚴重腹部劇痛、連續嘔吐無法進食任何水分、解黑便或血便、尿量極少。"
+                    },
+                    fever: {
+                        id: "fever",
+                        title: "2. 發燒感冒詳細照護",
+                        subtitle: "體溫異常時的物理降溫與用藥原則。",
+                        badgeColor: "bg-indigo-100 text-indigo-800",
+                        badgeText: "發燒感冒",
+                        keywords: ["發燒", "感冒", "流感", "發燒頭痛", "喉嚨痛"],
+                        steps: [
+                            { title: "步驟一：定時測量體溫並記錄", desc: "使用耳溫槍或額溫槍定時測量體溫，若耳溫超過 38 度即為發燒，並記錄發燒時間與伴隨症狀。" },
+                            { title: "步驟二：溫水擦拭與補充大量水分", desc: "穿著輕薄透氣衣物，可用溫水擦拭頸部、腋下幫助散熱，並隨時補充溫開水防止脫水。" }
+                        ],
+                        redFlags: "高燒超過 38.5 度持續 3 天以上不退、呼吸急促喘不過氣、意識不清。"
+                    }
+                }
+            },
+            modeC: {
+                title: "心血管急症",
+                items: {
+                    mi: {
+                        id: "mi",
+                        title: "1. 心肌梗塞黃金急救步驟",
+                        subtitle: "致命胸悶急症的危機處理。",
+                        badgeColor: "bg-rose-100 text-rose-800",
+                        badgeText: "心肌梗塞",
+                        keywords: ["心肌梗塞", "胸悶", "胸痛", "心絞痛", "喘不過氣", "心臟病"],
+                        steps: [
+                            { title: "步驟一：立即停止所有活動並原地坐下", desc: "當胸口出現悶痛、壓迫感時，立刻停下手邊工作，就地坐下或半臥休息，切勿再走動或強行出力。" },
+                            { title: "步驟二：立刻撥打 119 叫救護車", desc: "切勿自行開車或騎車去醫院，第一時間撥打 119 說明胸悶症狀，由救護車進行專業急救。" }
+                        ],
+                        redFlags: "胸口像大石頭壓住、疼痛放射至左手臂或下巴、冒冷汗想吐。"
+                    }
+                }
+            }
+        };
+
+        const acupressureDatabase = [
+            {
+                name: "百會穴 (Baihui)",
+                target: "頭痛、頭暈、失眠、提神醒腦、改善健忘",
+                location: "頭頂正中央，兩耳尖連線中點與頭部正中線之交會處。",
+                correctDesc: "以食指或中指指腹垂直輕輕按壓，或用梳子輕柔拍打。",
+                wrongDesc: "用力過猛敲擊頭骨導致頭皮挫傷。",
+                steps: ["每次按壓 2-3 分鐘", "感到頭腦清醒"],
+                iconSvg: `<svg width="140" height="100" viewBox="0 0 140 100" class="mx-auto">
+                    <ellipse cx="70" cy="50" rx="40" ry="30" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+                    <circle cx="70" cy="35" r="10" fill="#fda4af" opacity="0.7"/>
+                    <circle cx="70" cy="35" r="5" fill="#e11d48"/>
+                    <text x="70" y="90" fill="#cbd5e1" font-size="10" text-anchor="middle" font-weight="bold">頭頂正中央</text>
+                </svg>`
+            },
+            {
+                name: "印堂穴 (Yintang)",
+                target: "緩解頭痛、鼻塞、流鼻水、安神定志",
+                location: "兩眉頭正中央與鼻根交界處凹陷中。",
+                correctDesc: "以拇指或食指指腹輕柔揉按，由下往上推。",
+                wrongDesc: "用力死命掐壓導致局部皮膚紅腫疼痛。",
+                steps: ["每次揉按 1-2 分鐘"],
+                iconSvg: `<svg width="140" height="100" viewBox="0 0 140 100" class="mx-auto">
+                    <path d="M40,70 Q70,40 100,70" fill="none" stroke="#64748b" stroke-width="3"/>
+                    <circle cx="70" cy="45" r="10" fill="#fde68a" opacity="0.7"/>
+                    <circle cx="70" cy="45" r="5" fill="#d97706"/>
+                    <text x="70" y="90" fill="#cbd5e1" font-size="10" text-anchor="middle" font-weight="bold">兩眉頭正中央</text>
+                </svg>`
+            },
+            {
+                name: "風池穴 (Fengchi)",
+                target: "落枕、頸椎僵硬、頭痛、肩頸痠痛",
+                location: "後頸部大筋外側凹陷處，大約與耳垂齊平。",
+                correctDesc: "雙手抱頭，以大拇指指腹往眼眶方向施力按揉。",
+                wrongDesc: "用力過猛壓迫頸椎動脈導致頭暈。",
+                steps: ["每次按壓 3-5 分鐘"],
+                iconSvg: `<svg width="140" height="100" viewBox="0 0 140 100" class="mx-auto">
+                    <rect x="45" y="20" width="50" height="60" rx="20" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+                    <circle cx="50" cy="55" r="8" fill="#a7f3d0" opacity="0.7"/><circle cx="50" cy="55" r="4" fill="#059669"/>
+                    <circle cx="90" cy="55" r="8" fill="#a7f3d0" opacity="0.7"/><circle cx="90" cy="55" r="4" fill="#059669"/>
+                    <text x="70" y="92" fill="#cbd5e1" font-size="10" text-anchor="middle" font-weight="bold">後頸大筋外側</text>
+                </svg>`
+            },
+            {
+                name: "合谷穴 (Hegu)",
+                target: "頭痛、牙痛、感冒發燒、手肘痠痛",
+                location: "手背虎口處，第一、二掌骨之間，靠第二掌骨中點凹陷處。",
+                correctDesc: "以拇指指腹垂直向下施力，微感痠脹即可。",
+                wrongDesc: "用力過猛導致皮下瘀青或骨膜受傷。",
+                steps: ["每次按壓 3-5 分鐘", "左右手交替"],
+                iconSvg: `<svg width="140" height="100" viewBox="0 0 140 100" class="mx-auto">
+                    <path d="M20,80 Q40,40 70,20 Q100,40 120,80 Z" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+                    <line x1="70" y1="20" x2="50" y2="70" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>
+                    <line x1="70" y1="20" x2="90" y2="70" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>
+                    <circle cx="62" cy="48" r="10" fill="#fda4af" opacity="0.7"/>
+                    <circle cx="62" cy="48" r="5" fill="#e11d48"/>
+                    <text x="62" y="90" fill="#cbd5e1" font-size="10" text-anchor="middle" font-weight="bold">虎口合谷穴</text>
+                </svg>`
+            },
+            {
+                name: "膻中穴 (Shanzhong)",
+                target: "胸悶、咳嗽、心悸、舒緩情緒焦慮",
+                location: "兩乳頭連線正中點。",
+                correctDesc: "以指腹由上往下輕柔推按，或以掌根順時針揉動。",
+                wrongDesc: "用力大力搥打胸口造成胸骨挫傷。",
+                steps: ["每次按揉 2-3 分鐘"],
+                iconSvg: `<svg width="140" height="100" viewBox="0 0 140 100" class="mx-auto">
+                    <rect x="40" y="20" width="60" height="65" rx="10" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+                    <circle cx="70" cy="50" r="10" fill="#fde68a" opacity="0.7"/>
+                    <circle cx="70" cy="50" r="5" fill="#d97706"/>
+                    <text x="70" y="92" fill="#cbd5e1" font-size="10" text-anchor="middle" font-weight="bold">兩乳頭連線中點</text>
+                </svg>`
+            },
+            {
+                name: "內關穴 (Neiguan)",
+                target: "胃痛、噁心嘔吐、暈車、失眠、心悸",
+                location: "前臂內側腕橫紋正中往上約二寸（三橫指距離）兩筋之間。",
+                correctDesc: "用拇指指腹強而有力按壓，使痠麻感傳至指尖。",
+                wrongDesc: "在骨頭上直接用力摩擦導致皮下破皮。",
+                steps: ["按壓 3 分鐘", "感到胃部舒緩"],
+                iconSvg: `<svg width="140" height="100" viewBox="0 0 140 100" class="mx-auto">
+                    <rect x="40" y="10" width="60" height="80" rx="15" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+                    <line x1="65" y1="15" x2="65" y2="85" stroke="#94a3b8" stroke-width="3"/>
+                    <line x1="75" y1="15" x2="75" y2="85" stroke="#94a3b8" stroke-width="3"/>
+                    <circle cx="70" cy="45" r="10" fill="#fde68a" opacity="0.7"/>
+                    <circle cx="70" cy="45" r="5" fill="#d97706"/>
+                    <text x="70" y="94" fill="#cbd5e1" font-size="10" text-anchor="middle" font-weight="bold">腕上三橫指 兩筋間</text>
+                </svg>`
+            },
+            {
+                name: "中脘穴 (Zhongwan)",
+                target: "消化不良、胃脹氣、胃痛、食欲不振",
+                location: "肚臍上方 4 寸（約自己食指到小指四橫指寬的兩倍距離）。",
+                correctDesc: "以手掌根部或指腹順時針方向柔和打圈按摩。",
+                wrongDesc: "飯後立刻大力重壓導致腹痛加劇。",
+                steps: ["每次按摩 3-5 分鐘"],
+                iconSvg: `<svg width="140" height="100" viewBox="0 0 140 100" class="mx-auto">
+                    <ellipse cx="70" cy="50" rx="35" ry="30" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+                    <circle cx="70" cy="35" r="10" fill="#a7f3d0" opacity="0.7"/>
+                    <circle cx="70" cy="35" r="5" fill="#059669"/>
+                    <text x="70" y="92" fill="#cbd5e1" font-size="10" text-anchor="middle" font-weight="bold">肚臍上方 4 寸</text>
+                </svg>`
+            },
+            {
+                name: "腎俞穴 (Shenshu)",
+                target: "腰痠背痛、腰膝無力、消除下背疲勞",
+                location: "後腰部，第二腰椎棘突下，旁開 1.5 寸（大約左右各兩指寬）。",
+                correctDesc: "雙手握拳以拳面輕輕敲擊或用指腹按揉。",
+                wrongDesc: "用力過猛敲擊脊椎骨。",
+                steps: ["每次按揉 3-5 分鐘"],
+                iconSvg: `<svg width="140" height="100" viewBox="0 0 140 100" class="mx-auto">
+                    <rect x="45" y="15" width="50" height="70" rx="10" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+                    <circle cx="52" cy="50" r="8" fill="#93c5fd" opacity="0.7"/><circle cx="52" cy="50" r="4" fill="#2563eb"/>
+                    <circle cx="88" cy="50" r="8" fill="#93c5fd" opacity="0.7"/><circle cx="88" cy="50" r="4" fill="#2563eb"/>
+                    <text x="70" y="93" fill="#cbd5e1" font-size="10" text-anchor="middle" font-weight="bold">第二腰椎旁開</text>
+                </svg>`
+            },
+            {
+                name: "委中穴 (Weizhong)",
+                target: "腰背痠痛、膝蓋僵硬、下肢水腫、筋骨緊繃",
+                location: "膝蓋後方大腿橫紋正中央（膕窩正中）。",
+                correctDesc: "以拇指指腹適度施力點壓，感到微微痠脹即可。",
+                wrongDesc: "用力過度拍打膝後動脈血管。",
+                steps: ["每次按壓 2-3 分鐘"],
+                iconSvg: `<svg width="140" height="100" viewBox="0 0 140 100" class="mx-auto">
+                    <rect x="45" y="20" width="50" height="60" rx="15" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+                    <circle cx="70" cy="50" r="10" fill="#fda4af" opacity="0.7"/>
+                    <circle cx="70" cy="50" r="5" fill="#e11d48"/>
+                    <text x="70" y="92" fill="#cbd5e1" font-size="10" text-anchor="middle" font-weight="bold">膝後膕窩正中</text>
+                </svg>`
+            },
+            {
+                name: "足三里 (Zusanli)",
+                target: "調理腸胃、消除疲勞、增強免疫力",
+                location: "外膝眼下四橫指、脛骨外側約一橫指處。",
+                correctDesc: "以大拇指垂直下壓，配合緩慢呼吸。",
+                wrongDesc: "敲擊過猛導致肌肉挫傷。",
+                steps: ["每日早晚按壓 5 分鐘"],
+                iconSvg: `<svg width="140" height="100" viewBox="0 0 140 100" class="mx-auto">
+                    <circle cx="70" cy="30" r="18" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+                    <rect x="62" y="45" width="16" height="45" rx="6" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+                    <circle cx="52" cy="62" r="10" fill="#a7f3d0" opacity="0.7"/>
+                    <circle cx="52" cy="62" r="5" fill="#059669"/>
+                    <text x="70" y="95" fill="#cbd5e1" font-size="10" text-anchor="middle" font-weight="bold">外膝眼下四橫指</text>
+                </svg>`
+            },
+            {
+                name: "三陰交 (Sanyinjiao)",
+                target: "婦科調理、經痛、改善血液循環、失眠",
+                location: "內踝尖高點往上四橫指（約 3 寸），脛骨內側邊緣後方。",
+                correctDesc: "以拇指指腹垂直往骨頭邊緣方向揉按。",
+                wrongDesc: "孕婦切忌強力按壓此穴。",
+                steps: ["每次按壓 3 分鐘"],
+                iconSvg: `<svg width="140" height="100" viewBox="0 0 140 100" class="mx-auto">
+                    <rect x="55" y="15" width="30" height="70" rx="10" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="10" fill="#fde68a" opacity="0.7"/>
+                    <circle cx="50" cy="50" r="5" fill="#d97706"/>
+                    <text x="70" y="93" fill="#cbd5e1" font-size="10" text-anchor="middle" font-weight="bold">內踝尖上四橫指</text>
+                </svg>`
+            },
+            {
+                name: "太衝穴 (Taichong)",
+                target: "平肝熄風、舒緩情緒焦慮、頭痛、頭暈",
+                location: "足背第一、二趾骨結合部之前的凹陷處。",
+                correctDesc: "以拇指由趾縫往腳踝方向推揉按壓。",
+                wrongDesc: "用力過度刮傷足背皮膚。",
+                steps: ["每次按壓 3 分鐘", "左右腳交替"],
+                iconSvg: `<svg width="140" height="100" viewBox="0 0 140 100" class="mx-auto">
+                    <path d="M40,80 Q70,20 100,80 Z" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+                    <circle cx="70" cy="55" r="10" fill="#a7f3d0" opacity="0.7"/>
+                    <circle cx="70" cy="55" r="5" fill="#059669"/>
+                    <text x="70" y="93" fill="#cbd5e1" font-size="10" text-anchor="middle" font-weight="bold">足背第一二趾凹陷</text>
+                </svg>`
+            }
+        ];
+
+        const chronicDiseasesData = [
+            { name: "高血壓 (Hypertension)", desc: "血壓持續超過 140/90 mmHg，增加心血管與中風風險。", care: "每日量血壓、飲食清淡少鹽、規律運動。" },
+            { name: "糖尿病 (Diabetes)", desc: "血糖過高導致血管與神經病變，引起多尿、易飢與視力模糊。", care: "定期檢測血糖、定時定量飲食。" },
+            { name: "高血脂症 (Hyperlipidemia)", desc: "血液中膽固醇或三酸甘油脂過高，造成動脈硬化。", care: "控制油膩飲食、定期抽血檢查。" }
+        ];
+
+        const comprehensiveDiseasesDatabase = [
+            { name: "急性盲腸炎 (急性闌尾炎)", desc: "右下腹劇痛、伴隨噁心想吐與微燒，為常見外科急症。", department: "一般外科 / 急診室" },
+            { name: "膽結石與急性膽囊炎", desc: "右上腹劇痛、可能輻射至右肩膀，常因油膩飲食誘發。", department: "一般外科 / 肝膽腸胃科" },
+            { name: "急性胰臟炎", desc: "上腹部劇烈持續疼痛並向背部放射，常與膽結石或過量飲酒有關。", department: "一般外科 / 腸胃內科" },
+            { name: "腎結石與輸尿管結石", desc: "側腰部劇烈絞痛（如刀割般）、血尿、坐立難安。", department: "泌尿科 / 急診室" },
+            { name: "五十肩 (沾黏性肩關節囊炎)", desc: "肩膀關節囊沾黏發炎，導致手臂無法舉高、夜間痛醒。", department: "復健科 / 骨科" },
+            { name: "胃潰瘍與十二指腸潰瘍", desc: "上腹部悶痛、灼熱感（火燒心），常在空腹或進食後發作。", department: "腸胃內科" },
+            { name: "胃食道逆流 (GERD)", desc: "胃酸逆流至食道，引起胸口灼熱、喉嚨異物感、夜間咳嗽。", department: "腸胃內科" },
+            { name: "椎間盤突出 (坐骨神經痛)", desc: "腰部劇痛並向下放射至臀部、大腿或小腿，伴隨麻木感。", department: "骨科 / 神經外科 / 復健科" },
+            { name: "腦中風 (缺血性/出血性)", desc: "突發性臉部歪斜、單側手腳無力、口齒不清 (FAST口訣)。", department: "神經內科 / 急診室" },
+            { name: "冠狀動脈心臟病 (心絞痛)", desc: "胸口悶痛、壓迫感，運動或情緒激動時加劇，休息可緩解。", department: "心臟內科" },
+            { name: "氣喘 (Asthma)", desc: "反覆發作的咳嗽、喘鳴聲、呼吸困難，常接觸過敏原後發作。", department: "胸腔內科" },
+            { name: "痛風與高尿酸血症", desc: "大腳趾關節紅腫熱痛、劇烈抽痛，常因飲酒或食用海鮮誘發。", department: "風濕免疫科 / 家醫科" }
+        ];
+
+        const taiwanHospitalsDatabase = [
+            {
+                name: "台大醫院 (National Taiwan University Hospital)",
+                city: "台北市",
+                address: "台北市中正區中山南路7號",
+                phone: "02-23123456",
+                superintendent: "吳明賢",
+                notableDoctors: [
+                    { name: "陳益祥", specialty: "心臟外科 / 心臟移植" },
+                    { name: "李伯璋", specialty: "腎臟移植 / 一般外科" },
+                    { name: "吳明賢", specialty: "胃腸肝膽科 / 幽門螺旋桿菌" }
+                ]
+            },
+            {
+                name: "台北榮民總醫院 (Taipei Veterans General Hospital)",
+                city: "台北市",
+                address: "台北市北投區石牌路二段201號",
+                phone: "02-28712121",
+                superintendent: "陳威明",
+                notableDoctors: [
+                    { name: "陳威明", specialty: "骨科 / 骨肉瘤治療" },
+                    { name: "江晨恩", specialty: "心臟內科 / 高血壓權威" }
+                ]
+            },
+            {
+                name: "林口長庚紀念醫院 (Linkou Chang Gung Memorial Hospital)",
+                city: "桃園市",
+                address: "桃園市龜山區復興街5號",
+                phone: "03-3281200",
+                superintendent: "陳建宗",
+                notableDoctors: [
+                    { name: "陳建宗", specialty: "整形外科 / 顱顏重建" },
+                    { name: "魏福全", specialty: "顯微重建外科" }
+                ]
+            },
+            {
+                name: "中國醫藥大學附設醫院 (China Medical University Hospital)",
+                city: "台中市",
+                address: "台中市北區育德路2號",
+                phone: "04-22052121",
+                superintendent: "周德陽",
+                notableDoctors: [
+                    { name: "周德陽", specialty: "神經外科 / 腦瘤治療" },
+                    { name: "陳宏基", specialty: "整形外科 / 亞洲換肝權威" }
+                ]
+            },
+            {
+                name: "高雄榮民總醫院 (Kaohsiung Veterans General Hospital)",
+                city: "高雄市",
+                address: "高雄市左營區大中一路386號",
+                phone: "07-3422121",
+                superintendent: "林曜祥",
+                notableDoctors: [
+                    { name: "林曜祥", specialty: "耳鼻喉頭頸外科" },
+                    { name: "黃偉春", specialty: "心臟內科 / 急重症" }
+                ]
+            }
+        ];
+
+        const pharmacyOTC_Database = [
+            { 
+                name: "普拿疼 (Acetaminophen / Paracetamol)", 
+                category: "止痛退燒", 
+                efficacy: "緩解頭痛、發燒、肌肉痛、經痛。", 
+                enName: "Tylenol / Paracetamol", 
+                jpName: "タイレノールA", 
+                krName: "타이레놀 (아세트아미노펜)",
+                recommendedBrand: "Tylenol (原廠)",
+                backupBrands: [
+                    { name: "普拿疼 (Panadol)", en: "Panadol", jp: "パナドール", kr: "판돌" },
+                    { name: "力停疼 (Scanol)", en: "Scanol", jp: "スカノール", kr: "스카놀" },
+                    { name: "安啦錠 (Anol)", en: "Anol", jp: "アノール", kr: "아놀" },
+                    { name: "百服寧 (Bufferin)", en: "Bufferin", jp: "バファリン", kr: "버파린" }
+                ]
+            },
+            { 
+                name: "EVE 止痛藥 (Ibuprofen Compound)", 
+                category: "止痛消炎", 
+                efficacy: "針對強烈頭痛、生理痛、牙痛、關節痛具強效消炎止痛。", 
+                enName: "Ibuprofen Compound", 
+                jpName: "イブA錠", 
+                krName: "이브 진통제 (이부프로펜)",
+                recommendedBrand: "EVE A錠 (日本SS製藥)",
+                backupBrands: [
+                    { name: "安舒疼 (Advil)", en: "Advil", jp: "アドビル", kr: "애드빌" },
+                    { name: "斯斯止痛膠囊", en: "Sisi Capsule", jp: "シスシカプセル", kr: "시시 캡슐" },
+                    { name: "痛立定 (Brufen)", en: "Brufen", jp: "ブルフェン", kr: "부루펜" },
+                    { name: "保拿疼 (Panafen)", en: "Panafen", jp: "パナフェン", kr: "파나펜" }
+                ]
+            },
+            { 
+                name: "斯斯感冒膠囊 (Cold Relief)", 
+                category: "綜合感冒", 
+                efficacy: "緩解感冒引起的發燒、頭痛、流鼻水、打噴嚏、喉嚨痛。", 
+                enName: "Cold Relief Capsule", 
+                jpName: "総合感冒薬 (パブロン)", 
+                krName: "종합 감기약 (파브론)",
+                recommendedBrand: "斯斯膠囊 (台灣)",
+                backupBrands: [
+                    { name: "大正百保能 (Pabron Gold A)", en: "Pabron Gold A", jp: "パブロンゴールドA", kr: "파브론 골드 A" },
+                    { name: "伏冒膠囊 (Panadol Cold)", en: "Panadol Cold", jp: "パナドールコールド", kr: "판돌 콜드" },
+                    { name: "克敏膠囊", en: "Kemin Capsule", jp: "ケミンカプセル", kr: "케민 캡슐" },
+                    { name: "感冒靈顆粒", en: "Ganmao Ling", jp: "感冒霊顆粒", kr: "감모령" }
+                ]
+            },
+            { 
+                name: "正露丸 (Seirogan)", 
+                category: "腸胃消化", 
+                efficacy: "治療腹瀉、消化不良、食物中毒引起之腸胃不適。", 
+                enName: "Seirogan Pills", 
+                jpName: "正露丸 (セイロガン)", 
+                krName: "정로환 (세이로간)",
+                recommendedBrand: "喇叭牌正露丸 (日本大幸藥品)",
+                backupBrands: [
+                    { name: "斯斯胃散", en: "Sisi Stomach Powder", jp: "胃腸薬", kr: "위장약" },
+                    { name: "金十字胃腸藥", en: "Golden Cross Stomach Powder", jp: "黄金十字胃腸薬", kr: "골든크로스 위장약" },
+                    { name: "強力施美藥膏", en: "Strong Smecta", jp: "スメクタ", kr: "스멕타" },
+                    { name: "善胃得 (Zantac)", en: "Zantac", jp: "ザンタック", kr: "잔택" }
+                ]
+            },
+            { 
+                name: "保胃適 / 胃乳 (Antacid / Alugel)", 
+                category: "腸胃消化", 
+                efficacy: "中和胃酸、緩解胃食道逆流、火燒心、胃痛。", 
+                enName: "Antacid Suspension", 
+                jpName: "制酸剤 (キャベジン)", 
+                krName: "제산제 (개비스콘)",
+                recommendedBrand: "吉胃福佩 (Gelfos)",
+                backupBrands: [
+                    { name: "佳胃斯康 (Gaviscon)", en: "Gaviscon", jp: "ガビスコン", kr: "개비스콘" },
+                    { name: "太田胃散 (Ohta's Isan)", en: "Ohta's Isan", jp: "太田胃散", kr: "오타이산" },
+                    { name: "金十字胃乳", en: "Golden Cross Antacid", jp: "胃腸乳", kr: "위장 겔" },
+                    { name: "息胃痛膠囊", en: "Stomach Relief", jp: "胃痛止め", kr: "위통약" }
+                ]
+            },
+            { 
+                name: "曼秀雷敦軟膏 (Mentholatum Ointment)", 
+                category: "外用消炎", 
+                efficacy: "緩解蚊蟲叮咬、輕微擦傷、肌肉痠痛、鼻塞。", 
+                enName: "Mentholatum Ointment", 
+                jpName: "メンソレータム軟膏", 
+                krName: "멘소래담 연고",
+                recommendedBrand: "曼秀雷敦小護士軟膏",
+                backupBrands: [
+                    { name: "虎標萬金油 (Tiger Balm)", en: "Tiger Balm", jp: "タイガーバーム", kr: "타이거 밤" },
+                    { name: "綠油精 (Green Oil)", en: "Green Oil", jp: "グリーンオイル", kr: "녹기름" },
+                    { name: "白花油 (White Flower Oil)", en: "White Flower Oil", jp: "白花油", kr: "백화유" },
+                    { name: "喜療妥軟膏 (Hirudoid)", en: "Hirudoid Cream", jp: "ヒルドイド", kr: "힐로이드" }
+                ]
+            },
+            { 
+                name: "喜療妥 / 喜療疤 (Hirudoid / Hiruscar)", 
+                category: "外用修復", 
+                efficacy: "加速瘀青消散、改善外傷後疤痕與色素沉澱。", 
+                enName: "Hirudoid Cream / Hiruscar", 
+                jpName: "ヒルドイドクリーム", 
+                krName: "힐로이드 크림 / 흉터연고",
+                recommendedBrand: "喜療妥 (Hirudoid)",
+                backupBrands: [
+                    { name: "美德疤痕凝膠 (Mederma)", en: "Mederma Gel", jp: "メデマ", kr: "메데마 흉터겔" },
+                    { name: "喜療疤除疤凝膠", en: "Hiruscar Gel", jp: "ヒルスカー", kr: "힐스카 젤" },
+                    { name: "抗疤凝膠 (Scarguard)", en: "Scarguard", jp: "スカーガード", kr: "스카가드" },
+                    { name: "喜療妥凝膠", en: "Hirudoid Gel", jp: "ヒルドイドジェル", kr: "힐로이드 젤" }
+                ]
+            },
+            { 
+                name: "抗生素軟膏 (Bactroban / Neosporin)", 
+                category: "外傷消炎", 
+                efficacy: "預防與治療皮膚擦傷、割傷之細菌感染。", 
+                enName: "Antibiotic Ointment", 
+                jpName: "抗生物質軟膏", 
+                krName: "항생제 연고 (박트로반)",
+                recommendedBrand: "百克敏軟膏 (Bactroban)",
+                backupBrands: [
+                    { name: "使皮新軟膏 (Scinidin)", en: "Scinidin Ointment", jp: "軟膏", kr: "신이딘 연고" },
+                    { name: "四環黴素眼藥膏",  en: "Tetracycline Ointment", jp: "テトラサイクリン", kr: "테트라사이클린" },
+                    { name: "喜療適護創膏", en: "Wound Care Cream", jp: "創傷軟膏", kr: "상처 연고" },
+                    { name: "使皮新乳膏", en: "Scinidin Cream", jp: "クリーム", kr: "크림" }
+                ]
+            },
+            { 
+                name: "抗過敏藥 / 組織胺阻斷劑 (Antihistamine)", 
+                category: "抗過敏", 
+                efficacy: "緩解過敏性鼻炎、流鼻水、皮膚發癢、蕁麻疹。", 
+                enName: "Antihistamine Tablet", 
+                jpName: "抗ヒスタミン剤", 
+                krName: "항히스타민제 (지르텍)",
+                recommendedBrand: "柔他敏 (Zyrtec / 驅異樂)",
+                backupBrands: [
+                    { name: "敏地寧 (Allegra / 舒敏)", en: "Allegra", jp: "アレグラ", kr: "알레그라" },
+                    { name: "克敏錠 (Clarityne)", en: "Clarityne", jp: "クラリチン", kr: "클라리틴" },
+                    { name: "勝克敏液", en: "Cetirizine Syrup", jp: "シロップ", kr: "시럽" },
+                    { name: "鼻福錠 (Nupor)", en: "Nupor Tablet", jp: "鼻炎薬", kr: "비염약" }
+                ]
+            },
+            { 
+                name: "人工淚液 / 洗眼液 (Artificial Tears)", 
+                category: "眼科護理", 
+                efficacy: "緩解眼睛乾澀、疲勞、異物感或異物入眼沖洗。", 
+                enName: "Artificial Tears / Eye Wash", 
+                jpName: "人工涙液 / アイボン", 
+                krName: "인공눈물 (아이봉)",
+                recommendedBrand: "舒緩人工淚液 (Refresh Tears)",
+                backupBrands: [
+                    { name: "樂敦小紅花眼藥水 (Rohto)", en: "Rohto Eye Drops", jp: "ロート製薬", kr: "로토 안과" },
+                    { name: "獅王 MediGuard 眼藥水", en: "Lion Eye Drops", jp: "ライオン", kr: "라이온 안약" },
+                    { name: "人工淚液單支裝", en: "Single-dose Tears", jp: "使い捨て点眼", kr: "일회용 인공눈물" },
+                    { name: "洗眼液 (Eyebon)", en: "Eyebon Wash", jp: "アイボン", kr: "아이본" }
+                ]
+            }
+        ];
+
+        let currentMainMode = 'modeA';
+        let currentSubKey = 'abrasion';
+
+        window.onload = function() {
+            switchMainView('home');
+            checkWelcomeModalState();
+        };
+
+        function checkWelcomeModalState() {
+            const hideWelcome = localStorage.getItem('hideWelcomeModal');
+            const modal = document.getElementById('welcomeModal');
+            if (!hideWelcome && modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        window.closeWelcomeModal = function() {
+            const checkbox = document.getElementById('dontShowAgainCheck');
+            const modal = document.getElementById('welcomeModal');
+            if (checkbox && checkbox.checked) {
+                localStorage.setItem('hideWelcomeModal', 'true');
+            }
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        };
+
+        window.switchMainView = function(viewName) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+            if (viewName === 'home') {
+                document.getElementById('view-home').classList.remove('hidden');
+                switchMode(currentMainMode);
+            } else if (viewName === 'caraccident') {
+                document.getElementById('view-caraccident').classList.remove('hidden');
+            } else if (viewName === 'symptomChecker') {
+                document.getElementById('view-symptomChecker').classList.remove('hidden');
+            } else if (viewName === 'acupressure') {
+                document.getElementById('view-acupressure').classList.remove('hidden');
+                renderAcupressureList(acupressureDatabase);
+            } else if (viewName === 'chronic') {
+                document.getElementById('view-chronic').classList.remove('hidden');
+                renderChronicList(chronicDiseasesData);
+            } else if (viewName === 'diseases') {
+                document.getElementById('view-diseases').classList.remove('hidden');
+                renderDiseasesList(comprehensiveDiseasesDatabase);
+            } else if (viewName === 'pharmacy') {
+                document.getElementById('view-pharmacy').classList.remove('hidden');
+                renderPharmacyList(pharmacyOTC_Database);
+            } else if (viewName === 'aiVision') {
+                document.getElementById('view-aiVision').classList.remove('hidden');
+            } else if (viewName === 'bmi') {
+                document.getElementById('view-bmi').classList.remove('hidden');
+            } else if (viewName === 'hospitals') {
+                document.getElementById('view-hospitals').classList.remove('hidden');
+                renderHospitalsList(taiwanHospitalsDatabase);
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        let selectedBase64Image = null;
+        let selectedMimeType = 'image/jpeg';
+
+        window.handleImageUpload = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            selectedMimeType = file.type;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Full = e.target.result;
+                selectedBase64Image = base64Full.split(',')[1];
+                document.getElementById('uploadPlaceholder').classList.add('hidden');
+                const prevCont = document.getElementById('imagePreviewContainer');
+                prevCont.classList.remove('hidden');
+                document.getElementById('previewImg').src = base64Full;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.analyzeImageWithAI = async function() {
+            if (!selectedBase64Image) {
+                alert("請先上傳或拍攝一張照片！");
+                return;
+            }
+
+            const promptText = document.getElementById('aiUserPrompt').value.trim() || "請分析這張照片的傷口或狀況，並提供專業急救與護理建議。";
+            const loadingEl = document.getElementById('aiLoading');
+            const resultArea = document.getElementById('aiResultArea');
+            const resultText = document.getElementById('aiResultText');
+
+            loadingEl.classList.remove('hidden');
+            resultArea.classList.add('hidden');
+
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [
+                    {
+                        role: "user",
+                        parts: [
+                            { text: "你是一位專業的急救與醫療諮詢助手。請根據以下用戶上傳的照片與補充說明進行分析，提供可能的狀況評估、處理步驟與何時需就醫的警示：" + promptText },
+                            {
+                                inlineData: {
+                                    mimeType: selectedMimeType,
+                                    data: selectedBase64Image
+                                }
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            try {
+                let response = null;
+                for (let i = 0; i < 3; i++) {
+                    try {
+                        response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        if (response.ok) break;
+                    } catch (err) {
+                        await new Promise(res => setTimeout(res, Math.pow(2, i) * 1000));
+                    }
+                }
+
+                if (!response || !response.ok) {
+                    throw new Error("API 請求失敗");
+                }
+
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    const text = candidate.content.parts[0].text;
+                    resultText.innerHTML = text.replace(/\n/g, '<br>');
+                    resultArea.classList.remove('hidden');
+                } else {
+                    resultText.textContent = "無法解析 AI 回應，請稍後再試。";
+                    resultArea.classList.remove('hidden');
+                }
+            } catch (err) {
+                resultText.textContent = "網路連線異常或 AI 服務忙碌中，請稍後再試。";
+                resultArea.classList.remove('hidden');
+            } finally {
+                loadingEl.classList.add('hidden');
+            }
+        };
+
+        window.switchMode = function(mode) {
+            currentMainMode = mode;
+            const titleEl = document.getElementById('categoryBarTitle');
+            if (titleEl) titleEl.textContent = medicalDatabase[mode].title + "指引";
+            renderSubCategoryTabs();
+            renderDetailContent(Object.keys(medicalDatabase[mode].items)[0]);
+        };
+
+        window.renderSubCategoryTabs = function() {
+            const container = document.getElementById('subCategoryTabs');
+            if (!container) return;
+            const items = medicalDatabase[currentMainMode].items;
+            container.innerHTML = Object.keys(items).map(key => {
+                const item = items[key];
+                const isActive = key === currentSubKey;
+                let activeClass = isActive ? 'bg-teal-700 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200';
+                return `<button onclick="selectSubCategory('${key}')" class="px-3 py-1.5 rounded-lg font-semibold text-xs transition ${activeClass}">${item.title}</button>`;
+            }).join('');
+        };
+
+        window.selectSubCategory = function(key) {
+            currentSubKey = key;
+            renderSubCategoryTabs();
+            renderDetailContent(key);
+        };
+
+        window.renderDetailContent = function(key) {
+            const item = medicalDatabase[currentMainMode].items[key];
+            const container = document.getElementById('content-container');
+            if (!container || !item) return;
+
+            let stepsHTML = item.steps.map((step, idx) => `
+                <div class="flex items-start space-x-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 mb-2">
+                    <div class="w-6 h-6 rounded-lg bg-teal-700 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">${idx + 1}</div>
+                    <div>
+                        <h5 class="font-bold text-slate-900 text-xs mb-0.5">${step.title}</h5>
+                        <p class="text-slate-600 text-xs leading-relaxed">${step.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = `
+                <span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold ${item.badgeColor} inline-block mb-1.5">${item.badgeText}</span>
+                <h4 class="font-bold text-slate-900 text-sm mb-0.5">${item.title}</h4>
+                <p class="text-slate-500 text-xs mb-3">${item.subtitle}</p>
+                <div class="mb-3">${stepsHTML}</div>
+                <div class="p-2.5 bg-rose-50 rounded-xl border border-rose-100">
+                    <p class="text-rose-700 text-xs font-bold">⚠️ 紅旗警示：${item.redFlags}</p>
+                </div>
+            `;
+        };
+
+        window.handleHomeSearch = function(query) {
+            const q = query.trim().toLowerCase();
+            const area = document.getElementById('home-search-results-area');
+            const defaultArea = document.getElementById('default-home-content');
+            const grid = document.getElementById('home-search-grid');
+
+            if (!q) {
+                if (area) area.classList.add('hidden');
+                if (defaultArea) defaultArea.classList.remove('hidden');
+                return;
+            }
+            if (area) area.classList.remove('hidden');
+            if (defaultArea) defaultArea.classList.add('hidden');
+
+            let results = [];
+            Object.keys(medicalDatabase).forEach(modeKey => {
+                const modeObj = medicalDatabase[modeKey];
+                Object.keys(modeObj.items).forEach(itemKey => {
+                    const item = modeObj.items[itemKey];
+                    let match = item.title.toLowerCase().includes(q) || item.subtitle.toLowerCase().includes(q);
+                    if (item.keywords && item.keywords.some(kw => kw.toLowerCase().includes(q) || q.includes(kw.toLowerCase()))) {
+                        match = true;
+                    }
+                    if (match) {
+                        results.push({ type: 'emergency', mode: modeKey, itemKey: itemKey, title: item.title, subtitle: item.subtitle, badge: item.badgeText });
+                    }
+                });
+            });
+
+            comprehensiveDiseasesDatabase.forEach((d, idx) => {
+                if (d.name.toLowerCase().includes(q) || d.desc.toLowerCase().includes(q) || d.department.toLowerCase().includes(q)) {
+                    results.push({ type: 'disease', title: d.name, subtitle: d.desc, dept: d.department });
+                }
+            });
+
+            if (results.length === 0) {
+                grid.innerHTML = `<div class="p-4 text-center text-slate-500 font-medium text-xs bg-white rounded-xl border border-slate-200">找不到相關項目，身體不適請及早就醫。</div>`;
+                return;
+            }
+
+            grid.innerHTML = results.map(r => {
+                if (r.type === 'emergency') {
+                    return `
+                        <div onclick="jumpToEmergencyDetail('${r.mode}', '${r.itemKey}')" class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 hover:border-teal-500 cursor-pointer transition flex items-center justify-between">
+                            <div>
+                                <h5 class="font-bold text-slate-900 text-xs mb-0.5">${r.title} <i class="fa-solid fa-arrow-right text-teal-600 ml-1"></i></h5>
+                                <p class="text-slate-500 text-xs mb-1">${r.subtitle}</p>
+                                <span class="px-2 py-0.5 bg-teal-50 text-teal-700 rounded text-[10px] font-semibold">${r.badge}</span>
+                            </div>
+                        </div>
+                    `;
+                } else if (r.type === 'disease') {
+                    return `
+                        <div onclick="switchMainView('diseases')" class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 hover:border-indigo-500 cursor-pointer transition flex items-center justify-between">
+                            <div>
+                                <h5 class="font-bold text-slate-900 text-xs mb-0.5">${r.title} <i class="fa-solid fa-arrow-right text-indigo-600 ml-1"></i></h5>
+                                <p class="text-slate-500 text-xs mb-1">${r.subtitle}</p>
+                                <span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded text-[10px] font-semibold">建議科別：${r.dept}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+        };
+
+        window.jumpToEmergencyDetail = function(mode, itemKey) {
+            switchMainView('home');
+            switchMode(mode);
+            selectSubCategory(itemKey);
+            const area = document.getElementById('home-search-results-area');
+            const defaultArea = document.getElementById('default-home-content');
+            if (area) area.classList.add('hidden');
+            if (defaultArea) defaultArea.classList.remove('hidden');
+            const input = document.getElementById('homeSearchInput');
+            if (input) input.value = '';
+        };
+
+        window.clearHomeSearch = function() {
+            const input = document.getElementById('homeSearchInput');
+            if (input) input.value = '';
+            const area = document.getElementById('home-search-results-area');
+            const defaultArea = document.getElementById('default-home-content');
+            if (area) area.classList.add('hidden');
+            if (defaultArea) defaultArea.classList.remove('hidden');
+        };
+
+        window.handleCustomSymptomSearch = function(query) {
+            const q = query.trim().toLowerCase();
+            const area = document.getElementById('symptomResultArea');
+            const title = document.getElementById('symptomResultTitle');
+            const desc = document.getElementById('symptomResultDesc');
+            if (!q) {
+                if (area) area.classList.add('hidden');
+                return;
+            }
+            if (area) area.classList.remove('hidden');
+            if (q.includes('頭') || q.includes('暈')) {
+                title.textContent = "分析結果：頭部 / 腦神經相關";
+                desc.innerHTML = "可能病因：偏頭痛、緊張性頭痛、前庭神經炎、血壓波動。<br><strong>建議科別：</strong>神經內科、家醫科。<br><strong>日常護理：</strong>多喝溫水、避免熬夜、按壓百會穴與風池穴。";
+            } else if (q.includes('胸') || q.includes('喘')) {
+                title.textContent = "分析結果：胸口 / 心血管相關（需注意！）";
+                desc.innerHTML = "可能病因：心肌梗塞、心絞痛、胃食道逆流、恐慌症。<br><strong>建議科別：</strong>心臟內科、急診室。<br><strong>日常護理：</strong>若伴隨左臂痠麻、冒冷汗，請立即撥打 119！";
+            } else if (q.includes('腹') || q.includes('胃') || q.includes('痛')) {
+                title.textContent = "分析結果：腹部 / 腸胃相關";
+                desc.innerHTML = "可能病因：急性腸胃炎、盲腸炎、膽結石、胃痙攣。<br><strong>建議科別：</strong>腸胃內科、一般外科。<br><strong>日常護理：</strong>清淡飲食、按壓內關穴與中脘穴。";
+            } else {
+                title.textContent = "分析結果：一般身體不適";
+                desc.innerHTML = `您輸入的症狀為：「${q}」。建議您多休息、觀察變化，若持續不適請至家醫科或相關專科就診。`;
+            }
+        };
+
+        window.selectBodyPart = function(part) {
+            const area = document.getElementById('symptomResultArea');
+            const title = document.getElementById('symptomResultTitle');
+            const desc = document.getElementById('symptomResultDesc');
+            if (area) area.classList.remove('hidden');
+
+            if (part === 'head') {
+                title.textContent = "🧠 頭部 / 腦神經 / 暈眩分析";
+                desc.innerHTML = "常見原因：偏頭痛、睡眠不足、血壓異常、頸椎僵硬。<br><strong>建議科別：</strong>神經內科。<br><strong>建議穴位：</strong>百會穴、風池穴。";
+            } else if (part === 'chest') {
+                title.textContent = "🫀 胸口 / 心臟 / 呼吸喘分析";
+                desc.innerHTML = "常見原因：心絞痛、心肌梗塞、胸肌拉傷、胃食道逆流。<br><strong>建議科別：</strong>心臟內科 / 急診。<br><strong>注意：</strong>若伴隨冒冷汗、呼吸困難，請立即就醫！";
+            } else if (part === 'abdomen') {
+                title.textContent = "🤢 腹部 / 腸胃 / 絞痛分析";
+                desc.innerHTML = "常見原因：急性腸胃炎、盲腸炎（右下腹痛）、消化不良。<br><strong>建議科別：</strong>腸胃內科 / 一般外科。<br><strong>建議穴位：</strong>內關穴、中脘穴。";
+            } else if (part === 'joint') {
+                title.textContent = "🦾 四肢 / 肩膀五十肩 / 關節分析";
+                desc.innerHTML = "常見原因：五十肩關節沾黏、肌腱炎、運動拉傷。<br><strong>建議科別：</strong>復健科 / 骨科。<br><strong>建議護理：</strong>溫熱敷與爬牆運動。";
+            } else if (part === 'skin') {
+                title.textContent = "🩹 皮膚 / 擦傷 / 瘀青分析";
+                desc.innerHTML = "常見原因：外傷擦傷、皮下微血管破裂。<br><strong>建議科別：</strong>皮膚科 / 外科。<br><strong>建議護理：</strong>生理食鹽水清洗、人工皮覆蓋、48小時內冰敷。";
+            } else if (part === 'fever') {
+                title.textContent = "🌡️ 全身發燒 / 疲倦感冒分析";
+                desc.innerHTML = "常見原因：感冒病毒感染、流感、免疫系統發炎。<br><strong>建議科別：</strong>家醫科 / 耳鼻喉科。<br><strong>建議護理：</strong>多補充水分與維生素C。";
+            }
+        };
+
+        window.filterAcupressure = function() {
+            const query = document.getElementById('acupressureSearchInput').value.toLowerCase().trim();
+            const container = document.getElementById('acupressure-list-container');
+            const filtered = acupressureDatabase.filter(item => {
+                const nameMatch = item.name && item.name.toLowerCase().includes(query);
+                const titleMatch = item.title && item.title.toLowerCase().includes(query);
+                const targetMatch = item.target && item.target.toLowerCase().includes(query);
+                const descMatch = item.location && item.location.toLowerCase().includes(query);
+                return nameMatch || titleMatch || targetMatch || descMatch;
+            });
+            renderAcupressureList(filtered);
+        };
+
+        window.renderAcupressureList = function(list) {
+            const container = document.getElementById('acupressure-list-container');
+            if (!container) return;
+            if (list.length === 0) {
+                container.innerHTML = `<div class="p-4 text-center text-slate-500 text-xs bg-white rounded-xl border border-slate-200">找不到符合的穴位或傷口照護項目。</div>`;
+                return;
+            }
+            container.innerHTML = list.map(item => {
+                if (item.id === 'abrasion') {
+                    let stepsHTML = item.steps.map((s, i) => `
+                        <div class="p-3 bg-teal-50/50 rounded-xl border border-teal-100 mb-2">
+                            <h5 class="font-bold text-teal-900 text-xs mb-1">${s.title}</h5>
+                            <p class="text-slate-700 text-xs leading-relaxed">${s.desc}</p>
+                        </div>
+                    `).join('');
+                    return `
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                            <span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold ${item.badgeColor} inline-block">${item.badgeText}</span>
+                            <h3 class="font-bold text-slate-900 text-base">${item.title}</h3>
+                            <p class="text-slate-500 text-xs">${item.subtitle}</p>
+                            <div class="space-y-2 mt-2">${stepsHTML}</div>
+                            <div class="p-2.5 bg-rose-50 rounded-xl border border-rose-100 text-xs text-rose-700 font-bold">⚠️ 紅旗警示：${item.redFlags}</div>
+                        </div>
+                    `;
+                }
+
+                let stepsHTML = item.steps ? item.steps.map(s => `<li class="text-slate-600 text-xs">${s}</li>`).join('') : '';
+                return `
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                        <div class="md:col-span-2 space-y-2">
+                            <span class="px-2.5 py-0.5 bg-pink-100 text-pink-800 rounded-md text-[10px] font-bold inline-block">穴位保健</span>
+                            <h3 class="font-bold text-slate-900 text-base">${item.name}</h3>
+                            <p class="text-xs font-semibold text-teal-700"><i class="fa-solid fa-bullseye mr-1"></i> 功效：${item.target}</p>
+                            <p class="text-xs text-slate-600">📍 <strong>位置：</strong>${item.location}</p>
+                            
+                            <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-100 space-y-1">
+                                <p class="text-xs text-emerald-900 font-bold">✅ 正確按壓對照：${item.correctDesc}</p>
+                                <p class="text-xs text-rose-700 font-bold">❌ 常見錯誤禁忌：${item.wrongDesc}</p>
+                            </div>
+
+                            <ul class="list-disc list-inside space-y-1 pt-1">${stepsHTML}</ul>
+                        </div>
+                        <div class="flex flex-col items-center justify-center bg-slate-900 p-4 rounded-xl">
+                            ${item.iconSvg}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        window.renderChronicList = function(list) {
+            const container = document.getElementById('chronic-list-container');
+            if (!container) return;
+            container.innerHTML = list.map(c => `
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+                    <h3 class="font-bold text-slate-900 text-sm mb-1">${c.name}</h3>
+                    <p class="text-xs text-slate-600 mb-2"><strong>病況簡述：</strong>${c.desc}</p>
+                    <div class="p-2.5 bg-cyan-50 rounded-xl border border-cyan-100 text-xs text-cyan-900 font-medium">
+                        <strong>日常護理要點：</strong>${c.care}
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        window.filterDiseases = function() {
+            const q = document.getElementById('diseaseSearchInput').value.toLowerCase().trim();
+            const filtered = comprehensiveDiseasesDatabase.filter(d => d.name.toLowerCase().includes(q) || d.desc.toLowerCase().includes(q) || d.department.toLowerCase().includes(q));
+            renderDiseasesList(filtered);
+        };
+
+        window.renderDiseasesList = function(list) {
+            const container = document.getElementById('disease-list-container');
+            if (!container) return;
+            if (list.length === 0) {
+                container.innerHTML = `<div class="p-4 text-center text-slate-500 text-xs bg-white rounded-xl border border-slate-200">找不到符合的疾病項目。</div>`;
+                return;
+            }
+            container.innerHTML = list.map(d => `
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="font-bold text-slate-900 text-sm">${d.name}</h3>
+                        <span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded text-[10px] font-bold">建議科別：${d.department}</span>
+                    </div>
+                    <p class="text-xs text-slate-600">${d.desc}</p>
+                </div>
+            `).join('');
+        };
+
+        window.filterPharmacy = function() {
+            const q = document.getElementById('pharmacySearchInput').value.toLowerCase().trim();
+            const filtered = pharmacyOTC_Database.filter(p => 
+                p.name.toLowerCase().includes(q) || 
+                p.category.toLowerCase().includes(q) || 
+                p.efficacy.toLowerCase().includes(q) || 
+                p.enName.toLowerCase().includes(q) || 
+                p.jpName.toLowerCase().includes(q) || 
+                p.krName.toLowerCase().includes(q)
+            );
+            renderPharmacyList(filtered);
+        };
+
+        window.renderPharmacyList = function(list) {
+            const container = document.getElementById('pharmacy-list-container');
+            if (!container) return;
+            if (list.length === 0) {
+                container.innerHTML = `<div class="p-4 text-center text-slate-500 text-xs bg-white rounded-xl border border-slate-200">找不到符合的常備藥品。</div>`;
+                return;
+            }
+            container.innerHTML = list.map(p => {
+                let backupsHTML = p.backupBrands.map(b => `
+                    <div class="p-2 bg-slate-50 rounded-lg border border-slate-200 text-xs">
+                        <div class="font-bold text-slate-800">${b.name}</div>
+                        <div class="text-slate-500 text-[11px]">EN: ${b.en} | JP: ${b.jp} | KR: ${b.kr}</div>
+                    </div>
+                `).join('');
+
+                return `
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-slate-900 text-base">${p.name}</h3>
+                            <span class="px-2.5 py-0.5 bg-amber-100 text-amber-800 rounded text-xs font-bold">${p.category}</span>
+                        </div>
+                        <p class="text-xs text-slate-600"><strong>功效說明：</strong>${p.efficacy}</p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <div><span class="text-slate-500 font-semibold">英文 (EN):</span> <span class="text-slate-800 font-bold">${p.enName}</span></div>
+                            <div><span class="text-slate-500 font-semibold">日文 (JP):</span> <span class="text-slate-800 font-bold">${p.jpName}</span></div>
+                            <div><span class="text-slate-500 font-semibold">韓文 (KR):</span> <span class="text-slate-800 font-bold">${p.krName}</span></div>
+                        </div>
+
+                        <div class="p-3 bg-teal-50 rounded-xl border border-teal-100 text-xs">
+                            <span class="font-bold text-teal-900">⭐ 推薦首選品牌：</span> <span class="text-teal-800 font-bold">${p.recommendedBrand}</span>
+                        </div>
+
+                        <div>
+                            <h5 class="font-bold text-slate-800 text-xs mb-2">🔄 同成分 4 個備用/替代品牌（多國語言對照）：</h5>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">${backupsHTML}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        window.filterHospitalsByCity = function(city) {
+            if (city === '全部') {
+                renderHospitalsList(taiwanHospitalsDatabase);
+            } else {
+                const filtered = taiwanHospitalsDatabase.filter(h => h.city === city);
+                renderHospitalsList(filtered);
+            }
+        };
+
+        window.filterHospitalsByDoctorOrSpecialty = function() {
+            const q = document.getElementById('doctorSearchInput').value.toLowerCase().trim();
+            if (!q) {
+                renderHospitalsList(taiwanHospitalsDatabase);
+                return;
+            }
+            const filtered = taiwanHospitalsDatabase.filter(h => {
+                const nameMatch = h.name.toLowerCase().includes(q);
+                const cityMatch = h.city.toLowerCase().includes(q);
+                const suptMatch = h.superintendent.toLowerCase().includes(q);
+                const docMatch = h.notableDoctors.some(d => d.name.toLowerCase().includes(q) || d.specialty.toLowerCase().includes(q));
+                return nameMatch || cityMatch || suptMatch || docMatch;
+            });
+            renderHospitalsList(filtered);
+        };
+
+        window.renderHospitalsList = function(list) {
+            const container = document.getElementById('hospital-list-container');
+            if (!container) return;
+            if (list.length === 0) {
+                container.innerHTML = `<div class="p-4 text-center text-slate-500 text-xs bg-white rounded-xl border border-slate-200">找不到符合的醫院或醫師專長。</div>`;
+                return;
+            }
+            container.innerHTML = list.map(h => {
+                let docsHTML = h.notableDoctors.map(d => `
+                    <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                        <div>
+                            <span class="font-bold text-slate-900">${d.name}</span>
+                            <span class="text-slate-500 ml-2">(${d.specialty})</span>
+                        </div>
+                    </div>
+                `).join('');
+
+                return `
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-slate-900 text-base">${h.name}</h3>
+                            <a href="tel:${h.phone}" class="px-3 py-1.5 bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs rounded-xl shadow transition">
+                                <i class="fa-solid fa-phone mr-1"></i> ${h.phone}
+                            </a>
+                        </div>
+                        <p class="text-xs text-slate-600">📍 地址：${h.address}</p>
+                        <p class="text-xs text-slate-600">👔 院長：<span class="font-bold text-slate-800">${h.superintendent}</span></p>
+                        <div>
+                            <h5 class="font-bold text-slate-800 text-xs mb-1.5">🌟 權威醫師與專長：</h5>
+                            <div class="space-y-1.5">${docsHTML}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        window.calculateBMI = function() {
+            const hInput = document.getElementById('bmiHeight');
+            const wInput = document.getElementById('bmiWeight');
+            const resultArea = document.getElementById('bmiResultArea');
+            const valueDisplay = document.getElementById('bmiValueDisplay');
+            const statusDisplay = document.getElementById('bmiStatusDisplay');
+            const adviceText = document.getElementById('bmiAdviceText');
+
+            if (!hInput || !wInput || !resultArea) return;
+
+            const h = parseFloat(hInput.value) / 100;
+            const w = parseFloat(wInput.value);
+
+            if (isNaN(h) || isNaN(w) || h <= 0 || w <= 0) {
+                return;
+            }
+
+            const bmi = w / (h * h);
+            const bmiRounded = bmi.toFixed(1);
+
+            resultArea.classList.remove('hidden');
+            valueDisplay.textContent = bmiRounded;
+
+            let status = '';
+            let colorClass = '';
+            let advice = '';
+
+            if (bmi < 18.5) {
+                status = "體重過輕";
+                colorClass = "bg-blue-100 text-blue-800 border-blue-200";
+                advice = "您的體重過輕，建議增加營養攝取，均衡飲食並適度重訓增加肌肉量。";
+            } else if (bmi >= 18.5 && bmi < 24) {
+                status = "體重正常";
+                colorClass = "bg-emerald-100 text-emerald-800 border-emerald-200";
+                advice = "太棒了！您的 BMI 屬於正常範圍，請繼續維持良好的飲食與運動習慣。";
+            } else if (bmi >= 24 && bmi < 27) {
+                status = "體重過重";
+                colorClass = "bg-amber-100 text-amber-800 border-amber-200";
+                advice = "您的 BMI 稍高（過重），建議減少含糖飲料與油炸物，並增加每周有氧運動頻率。";
+            } else {
+                status = "肥胖";
+                colorClass = "bg-rose-100 text-rose-800 border-rose-200";
+                advice = "您的 BMI 達到肥胖標準，建議諮詢營養師或家醫科醫師，制定健康減重計畫以保護心血管健康。";
+            }
+
+            statusDisplay.className = `inline-block px-3 py-1 rounded-full text-xs font-bold border ${colorClass}`;
+            statusDisplay.textContent = status;
+            adviceText.textContent = advice;
+        };
+    </script>
+</body>
+</html>
