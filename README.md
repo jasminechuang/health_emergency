@@ -2,7 +2,7 @@
 
 本專案為一個整合性的前端網頁工具，旨在協助使用者在面對突發車禍現場、日常傷口包紮、身體不明不適、疼痛穴位按摩以及常備藥品選購時，能快速獲得正確的指引與國際對照。
 
-網頁同時已部署並託管於 GitHub Pages：[health_emergency](https://github.com/jasminechuang/health_emergency)
+網頁同時已部署並託管於 GitHub Pages：[健康急救與車禍指南](https://github.com/jasminechuang/health_emergency)
 
 ---
 
