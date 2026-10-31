@@ -1,4 +1,34 @@
-<!-- 首次開啟歡迎導覽彈跳視窗 -->
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全方位健康急救與車禍指南（完整精裝版）</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '"Noto Sans TC"', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .young-btn { min-height: 52px; font-size: 1rem; font-weight: 700; border-radius: 0.85rem; transition: all 0.2s ease; }
+    </style>
+</head>
+<body class="text-slate-900 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- 首次開啟歡迎導覽彈跳視窗 -->
 <div id="welcomeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 hidden">
     <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 animate-fade-in">
         <div class="flex items-center space-x-3 mb-4">
@@ -367,8 +397,8 @@
         </div>
         
         <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-            <div class="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:border-indigo-500 transition cursor-pointer relative" onclick="document.getElementById('aiImageInput').click()">
-                <input type="file" id="aiImageInput" accept="image/jpeg,image/png,image/webp" capture="environment" class="hidden" onchange="handleImageUpload(event)">
+            <label for="aiImageInput" class="block border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:border-indigo-500 transition cursor-pointer relative">
+                <input type="file" id="aiImageInput" accept="image/*" class="sr-only" onchange="handleImageUpload(event)">
                 <div id="uploadPlaceholder">
                     <i class="fa-solid fa-cloud-arrow-up text-3xl text-indigo-500 mb-2"></i>
                     <h4 class="font-bold text-slate-800 text-sm mb-1">點擊上傳或拍照</h4>
@@ -378,7 +408,7 @@
                     <img id="previewImg" src="" alt="Preview" class="max-h-48 mx-auto rounded-xl shadow mb-2">
                     <p class="text-xs text-indigo-600 font-bold">點擊可重新選擇照片</p>
                 </div>
-            </div>
+            </label>
 
             <div>
                 <label class="block font-bold text-slate-800 text-xs mb-1">補充說明（選填，例如：這是昨天跌倒擦傷的傷口，會痛）：</label>
@@ -386,7 +416,7 @@
             </div>
 
             <label class="flex items-start gap-2 p-3 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed">
-                <input type="checkbox" id="aiConsent" class="mt-0.5" required>
+                <input type="checkbox" id="aiConsent" class="mt-0.5" onchange="handleConsentChange(this)">
                 <span>我同意將這張照片及補充文字傳送至 Google Gemini 進行分析。我了解這是 AI 參考資訊，不是醫療診斷，且照片不會由本網站保存。</span>
             </label>
             <p class="text-xs font-bold text-rose-700">若可能有生命危險、嚴重出血、呼吸困難或意識不清，請立即聯絡當地緊急服務（台灣請撥 119），不要等待 AI 分析。</p>
@@ -966,7 +996,7 @@
             recommendedBrand: "柔他敏 (Zyrtec / 驅異樂)",
             backupBrands: [
                 { name: "敏地寧 (Allegra / 舒敏)", en: "Allegra", jp: "アレグラ", kr: "알레그라" },
-                { name: "克敏錠 (Clarityne)", en: "Clarityne", jp: "クラリチン", kr: "클라리틴" },
+                { name: "克敏錠 (Clarityne)", en: "Clarityne", jp: "クラリチン", kr: "클라리チン" },
                 { name: "勝克敏液", en: "Cetirizine Syrup", jp: "シロップ", kr: "시럽" },
                 { name: "鼻福錠 (Nupor)", en: "Nupor Tablet", jp: "鼻炎薬", kr: "비염약" }
             ]
@@ -1101,7 +1131,7 @@
 
     let selectedBase64Image = null;
     let selectedMimeType = 'image/jpeg';
-    const AI_VISION_ENDPOINT = window.AI_VISION_ENDPOINT || '/api/vision/analyze';
+    const AI_VISION_ENDPOINT = 'https://healthemergency.vercel.app/api/vision/analyze'; // 固定使用正式網域，不再讀取 ai-vision-config.js
     localStorage.removeItem('geminiVisionApiKey');
     let symptomRecords = [];
     try {
@@ -1110,13 +1140,12 @@
     } catch (err) {
         symptomRecords = [];
     }
-    renderSymptomRecords();
+    document.addEventListener('DOMContentLoaded', function() { window.renderSymptomRecords(); });
 
     window.handleImageUpload = function(event) {
         const file = event.target.files[0];
         if (!file) return;
         selectedBase64Image = null;
-        document.getElementById('aiConsent').checked = false;
         if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
             showAiStatus('目前只支援 JPG、PNG 或 WebP 圖片，請重新選取。', 'error');
             event.target.value = '';
@@ -1162,6 +1191,17 @@
         reader.readAsDataURL(file);
     };
 
+    window.handleConsentChange = function(box) {
+        const status = document.getElementById('aiStatus');
+        if (box.checked) {
+            // 勾選後清除「尚未取得同意」等舊錯誤訊息
+            if (status.textContent.includes('同意')) {
+                status.className = 'hidden';
+                status.textContent = '';
+            }
+        }
+    };
+
     window.showAiStatus = function(message, type) {
         const status = document.getElementById('aiStatus');
         status.textContent = message;
@@ -1177,7 +1217,7 @@
             showAiStatus('尚未取得同意。勾選同意傳送照片至 Google Gemini 後，才會上傳任何資料。', 'error');
             return;
         }
-        if (!AI_VISION_ENDPOINT || (AI_VISION_ENDPOINT === '/api/vision/analyze' && (location.protocol === 'file:' || location.hostname.endsWith('github.io')))) {
+        if (!AI_VISION_ENDPOINT || (AI_VISION_ENDPOINT === '/api/vision/analyze__never' && (location.protocol === 'file:' || location.hostname.endsWith('github.io')))) {
             showAiStatus('照片已選取，但此部署尚未設定 AI 分析服務。請管理者設定同源 /api/vision/analyze 伺服器端點；直接以本機檔案開啟時也無法連線。照片尚未送出。', 'error');
             return;
         }
@@ -1198,14 +1238,14 @@
                 body: JSON.stringify({ image: selectedBase64Image, mimeType: selectedMimeType, prompt: document.getElementById('aiUserPrompt').value.trim() })
             });
             const payload = await response.json().catch(() => ({}));
-            if (!response.ok) throw new Error(payload.message || (response.status === 404 ? '伺服器尚未設定 AI 分析端點。' : `伺服器回應錯誤（${response.status}）。`));
+            if (!response.ok) throw new Error((payload.message || (response.status === 404 ? '伺服器尚未設定 AI 分析端點。' : '伺服器回應錯誤。')) + ` [HTTP ${response.status}｜${AI_VISION_ENDPOINT}]`);
             const text = typeof payload === 'string' ? payload : (payload.result || payload.analysis || payload.text);
             if (!text) throw new Error('AI 服務沒有回傳分析結果，請稍後再試。');
             resultText.textContent = text;
             resultArea.classList.remove('hidden');
             showAiStatus('分析完成。以下是 AI 參考資訊，不能取代醫療診斷。若情況可能緊急，請立即聯絡當地緊急服務（台灣 119）。', 'success');
         } catch (error) {
-            const message = error.name === 'TypeError' ? '無法連線至 AI 分析服務。請確認網路連線，並請管理者檢查伺服器端點設定後重試。' : error.message;
+            const message = error.name === 'TypeError' ? `無法連線至 AI 分析服務（可能是網路、CORS 或 ALLOWED_ORIGIN 設定問題）。[${AI_VISION_ENDPOINT}]` : error.message;
             showAiStatus(message + ' 照片只在本次請求中使用，請稍後重試或改由專業醫療人員評估。', 'error');
         } finally {
             loading.classList.add('hidden');
@@ -1662,3 +1702,5 @@
         adviceText.textContent = advice;
     };
 </script>
+</body>
+</html>
