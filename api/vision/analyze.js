@@ -27,17 +27,53 @@ module.exports = async function handler(req, res) {
   if (typeof body === 'string') {
     try { body = JSON.parse(body); } catch { return reply(res, 400, '請求資料格式錯誤，請重新選擇照片。'); }
   }
-  const { image, mimeType, prompt = '' } = body || {};
-  if (!image || typeof image !== 'string' || !ALLOWED_MIME_TYPES.has(mimeType)) {
-    return reply(res, 400, '照片格式無效。請使用 JPG、PNG 或 WebP 圖片。');
-  }
-  const imageBytes = Math.floor(image.length * 3 / 4);
-  if (imageBytes > MAX_IMAGE_BYTES || !/^[A-Za-z0-9+/]*={0,2}$/.test(image)) {
-    return reply(res, 413, '照片超出伺服器可處理大小，請重新選擇較小的照片。');
-  }
+  const { image, mimeType, prompt = '', mode = 'symptom', age = '' } = body || {};
   if (typeof prompt !== 'string' || prompt.length > 1000) return reply(res, 400, '補充說明最多 1,000 字元。');
+  if (typeof age !== 'string' || age.length > 40) return reply(res, 400, '年齡層資料無效。');
+  const hasImage = typeof image === 'string' && image.length > 0;
+  if (!hasImage && !prompt.trim()) return reply(res, 400, '請提供照片或症狀描述。');
+  if (hasImage) {
+    if (!ALLOWED_MIME_TYPES.has(mimeType)) return reply(res, 400, '照片格式無效。請使用 JPG、PNG 或 WebP 圖片。');
+    const imageBytes = Math.floor(image.length * 3 / 4);
+    if (imageBytes > MAX_IMAGE_BYTES || !/^[A-Za-z0-9+/]*={0,2}$/.test(image)) {
+      return reply(res, 413, '照片超出伺服器可處理大小，請重新選擇較小的照片。');
+    }
+  }
 
-  const instructions = `請以繁體中文分析使用者提供的照片，辨識可見的傷口、皮膚狀況或藥品包裝。只描述可觀察資訊與一般衛教，不要診斷疾病、推測藥品成分或提供處方/劑量。照片不清楚或無法辨識時請直接說明。列出需要儘快就醫的警訊；若可能危及生命，建議立即聯絡當地緊急服務（台灣 119）。明確提醒這不是醫療診斷，應由醫療專業人員評估。${prompt.trim() ? `\n使用者補充：${prompt.trim()}` : ''}`;
+  const MODE_TEXT = {
+    symptom: '分析類型：身體症狀、皮膚、傷口或其他不適。',
+    medicine: '分析類型：藥膏或藥品包裝。',
+    both: '分析類型：症狀，並評估使用者提到或照片中的藥膏是否大致適合。'
+  };
+  const safeMode = MODE_TEXT[mode] ? mode : 'symptom';
+  const common = `你是提供一般衛教的健康資訊助理，請一律以繁體中文、使用 Markdown（### 小標題、* 項目符號、**粗體**）回答，語氣清楚、友善、不嚇人。
+${MODE_TEXT[safeMode]}${age ? `\n患者年齡層：${age}。請依此年齡層調整建議；新生兒、嬰幼兒、孕婦與高齡者要特別提醒更低的就醫門檻。` : ''}
+【安全原則】
+- 你不是醫師，不做確定診斷，不開處方。可用「常見可能原因」「可能與…有關」等不確定語氣說明。
+- 不提供任何藥物的具體劑量、次數、療程天數；使用方式一律以藥品包裝、仿單或醫師藥師指示為準。
+- 照片不清楚或資訊不足時，直接說明並列出需要補充的資訊。
+- 一定要列出「需要儘快就醫的警訊」；若可能危及生命（呼吸困難、意識改變、嚴重出血、胸痛、中風徵象、嚴重過敏、新生兒發燒等），第一段就建議立即撥打 119。
+- 結尾固定提醒：這不是醫療診斷，應由醫療專業人員評估。`;
+  const symptomFormat = `
+【症狀分析請依序包含】
+### 1. 觀察到／聽到的重點（部位、外觀、範圍、顏色、症狀持續時間）
+### 2. 常見可能原因（列 2–4 項，由較常見到較需留意，並說明各自的特徵）
+### 3. 居家照護與處理
+### 4. 需要儘快就醫的警訊
+### 5. 建議就診科別`;
+  const medicineFormat = `
+【藥膏／藥品分析請依序包含】
+### 1. 辨識到的藥品資訊（只根據包裝上可見的文字：品名、成分、適應症、廠牌；看不清楚就明說，不要猜測）
+### 2. 這類藥品一般用在哪些情況（依成分的一般用途說明，例如抗生素藥膏、類固醇藥膏、抗黴菌藥膏、保濕或傷口護理產品）
+### 3. 使用前須知與注意事項（不適合的情況、不能擦的部位如眼睛與黏膜、長期使用的風險、嬰幼兒／孕婦／高齡者注意，類固醇藥膏尤其要提醒不要自行長期使用於臉部與皺褶處與嬰幼兒）
+### 4. 與使用者描述的症狀是否大致合適（若有提供症狀；不確定時請建議詢問醫師或藥師）
+### 5. 何時應停用並就醫（出現紅腫加劇、過敏、無改善等）
+使用方式與劑量請以包裝、仿單及藥師或醫師指示為準。`;
+  const format = safeMode === 'medicine' ? medicineFormat : safeMode === 'both' ? symptomFormat + '\n' + medicineFormat : symptomFormat;
+  const userText = prompt.trim() ? `\n【使用者描述】${prompt.trim()}` : '';
+  const instructions = `${common}${format}${hasImage ? '' : '\n（本次沒有照片，僅依文字描述分析，請特別說明文字描述的限制。）'}${userText}`;
+  const parts = [{ text: instructions }];
+  if (hasImage) parts.push({ inline_data: { mime_type: mimeType, data: image } });
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 25000);
   try {
@@ -46,8 +82,8 @@ module.exports = async function handler(req, res) {
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY },
       signal: controller.signal,
       body: JSON.stringify({
-        contents: [{ parts: [{ text: instructions }, { inline_data: { mime_type: mimeType, data: image } }] }],
-        generationConfig: { maxOutputTokens: 700, temperature: 0.2 }
+        contents: [{ parts }],
+        generationConfig: { maxOutputTokens: 1800, temperature: 0.2 }
       })
     });
     const data = await upstream.json().catch(() => ({}));
