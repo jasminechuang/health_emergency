@@ -21,6 +21,7 @@
             }
         }
     </script>
+    <script src="./ai-vision-config.js"></script>
     <style>
         body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
         .young-btn { min-height: 52px; font-size: 1rem; font-weight: 700; border-radius: 0.85rem; transition: all 0.2s ease; }
@@ -392,10 +393,13 @@
         <div id="view-aiVision" class="view-section hidden">
             <h2 class="text-lg font-bold text-slate-900 mb-1">📸 AI 智慧拍照與傷口/藥品辨識</h2>
             <p class="text-slate-500 text-xs mb-4">上傳或拍攝您的傷口、皮膚狀況或藥品包裝照片，AI 將自動為您分析並提供初步衛教與建議。</p>
+            <div class="mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 leading-relaxed">
+                <strong>照片隱私：</strong>只有在您勾選下方同意並按下分析後，照片才會經網站後端傳送至 Google Gemini。網站不會保存照片；Google 對免費層提交內容的資料處理方式請參閱其政策。請勿上傳可識別個人身分的照片。
+            </div>
             
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
                 <div class="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:border-indigo-500 transition cursor-pointer relative" onclick="document.getElementById('aiImageInput').click()">
-                    <input type="file" id="aiImageInput" accept="image/*" capture="environment" class="hidden" onchange="handleImageUpload(event)">
+                    <input type="file" id="aiImageInput" accept="image/jpeg,image/png,image/webp" capture="environment" class="hidden" onchange="handleImageUpload(event)">
                     <div id="uploadPlaceholder">
                         <i class="fa-solid fa-cloud-arrow-up text-3xl text-indigo-500 mb-2"></i>
                         <h4 class="font-bold text-slate-800 text-sm mb-1">點擊上傳或拍照</h4>
@@ -411,6 +415,12 @@
                     <label class="block font-bold text-slate-800 text-xs mb-1">補充說明（選填，例如：這是昨天跌倒擦傷的傷口，會痛）：</label>
                     <input type="text" id="aiUserPrompt" placeholder="請描述您的狀況或問題..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl font-medium text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
+
+                <label class="flex items-start gap-2 p-3 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed">
+                    <input type="checkbox" id="aiConsent" class="mt-0.5" required>
+                    <span>我同意將這張照片及補充文字傳送至 Google Gemini 進行分析。我了解這是 AI 參考資訊，不是醫療診斷，且照片不會由本網站保存。</span>
+                </label>
+                <p class="text-xs font-bold text-rose-700">若可能有生命危險、嚴重出血、呼吸困難或意識不清，請立即聯絡當地緊急服務（台灣請撥 119），不要等待 AI 分析。</p>
 
                 <button onclick="analyzeImageWithAI()" id="analyzeBtn" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center space-x-2">
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
@@ -1071,7 +1081,8 @@
         let selectedBase64Image = null;
         let selectedMimeType = 'image/jpeg';
         // Set this to a same-origin server endpoint; never put a provider API key in this page.
-        const AI_VISION_ENDPOINT = '/api/vision/analyze';
+        // For GitHub Pages, set this to the deployed backend URL, e.g. https://your-app.vercel.app/api/vision/analyze.
+        const AI_VISION_ENDPOINT = window.AI_VISION_ENDPOINT || '/api/vision/analyze';
         localStorage.removeItem('geminiVisionApiKey');
         let symptomRecords = [];
         try {
@@ -1085,8 +1096,10 @@
         window.handleImageUpload = function(event) {
             const file = event.target.files[0];
             if (!file) return;
-            if (!file.type.startsWith('image/')) {
-                showAiStatus('請選擇有效的圖片檔案（JPG、PNG 等），再重新拍攝或選取。', 'error');
+            selectedBase64Image = null;
+            document.getElementById('aiConsent').checked = false;
+            if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+                showAiStatus('目前只支援 JPG、PNG 或 WebP 圖片，請重新選取。', 'error');
                 event.target.value = '';
                 return;
             }
@@ -1095,17 +1108,34 @@
                 event.target.value = '';
                 return;
             }
-            selectedMimeType = file.type === 'image/jpg' ? 'image/jpeg' : file.type;
             const reader = new FileReader();
             reader.onload = function(e) {
-                const base64Full = e.target.result;
-                selectedBase64Image = base64Full.split(',')[1];
+                const source = new Image();
+                source.onload = function() {
+                    // Vercel functions have a 4.5 MB request-body ceiling. Resize/compress locally
+                    // so accepted 15 MB originals can still be sent through the JSON endpoint.
+                    let scale = Math.min(1, 2048 / Math.max(source.naturalWidth, source.naturalHeight));
+                    const canvas = document.createElement('canvas');
+                    let compressed = '';
+                    for (let attempt = 0; attempt < 5; attempt++) {
+                        canvas.width = Math.max(1, Math.round(source.naturalWidth * scale));
+                        canvas.height = Math.max(1, Math.round(source.naturalHeight * scale));
+                        canvas.getContext('2d').drawImage(source, 0, 0, canvas.width, canvas.height);
+                        compressed = canvas.toDataURL('image/jpeg', attempt === 0 ? 0.82 : 0.65);
+                        if (compressed.length <= 3_700_000) break;
+                        scale *= 0.8;
+                    }
+                    selectedBase64Image = compressed.split(',')[1];
+                    selectedMimeType = 'image/jpeg';
                 document.getElementById('uploadPlaceholder').classList.add('hidden');
                 const prevCont = document.getElementById('imagePreviewContainer');
                 prevCont.classList.remove('hidden');
-                document.getElementById('previewImg').src = base64Full;
+                document.getElementById('previewImg').src = compressed;
                 document.getElementById('aiResultArea').classList.add('hidden');
-                showAiStatus('照片已就緒。按「開始 AI 智慧分析」送出分析。照片僅暫存在此頁面記憶體中。', 'success');
+                showAiStatus('照片已就緒，將在您同意並開始分析後傳送。照片只暫存在本頁面記憶體中。', 'success');
+                };
+                source.onerror = function() { showAiStatus('無法解讀這張圖片，請重新選取其他照片。', 'error'); };
+                source.src = e.target.result;
             };
             reader.onerror = function() {
                 selectedBase64Image = null;
@@ -1126,7 +1156,11 @@
                 showAiStatus('請先點擊照片區拍攝或選取一張圖片。若相機未開啟，請確認瀏覽器相機權限，或改用上傳照片。', 'error');
                 return;
             }
-            if (!AI_VISION_ENDPOINT || AI_VISION_ENDPOINT === '/api/vision/analyze' && location.protocol === 'file:') {
+            if (!document.getElementById('aiConsent').checked) {
+                showAiStatus('尚未取得同意。勾選同意傳送照片至 Google Gemini 後，才會上傳任何資料。', 'error');
+                return;
+            }
+            if (!AI_VISION_ENDPOINT || (AI_VISION_ENDPOINT === '/api/vision/analyze' && (location.protocol === 'file:' || location.hostname.endsWith('github.io')))) {
                 showAiStatus('照片已選取，但此部署尚未設定 AI 分析服務。請管理者設定同源 /api/vision/analyze 伺服器端點；直接以本機檔案開啟時也無法連線。照片尚未送出。', 'error');
                 return;
             }
@@ -1152,7 +1186,7 @@
                 if (!text) throw new Error('AI 服務沒有回傳分析結果，請稍後再試。');
                 resultText.textContent = text;
                 resultArea.classList.remove('hidden');
-                showAiStatus('分析完成。以下內容僅供參考；若傷勢嚴重或快速惡化，請立即就醫。', 'success');
+                showAiStatus('分析完成。以下是 AI 參考資訊，不能取代醫療診斷。若情況可能緊急，請立即聯絡當地緊急服務（台灣 119）。', 'success');
             } catch (error) {
                 const message = error.name === 'TypeError' ? '無法連線至 AI 分析服務。請確認網路連線，並請管理者檢查伺服器端點設定後重試。' : error.message;
                 showAiStatus(message + ' 照片只在本次請求中使用，請稍後重試或改由專業醫療人員評估。', 'error');
