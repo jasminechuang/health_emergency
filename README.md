@@ -4,6 +4,7 @@
 
 網頁同時已部署並託管於 GitHub Pages：[健康急救與車禍指南](https://jasminechuang.github.io/health_emergency/)
 
+#### 目前AI照片分析功能無法使用
 ---
 
 ## 🎯 專案目的與特色
