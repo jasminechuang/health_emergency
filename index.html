@@ -1191,6 +1191,33 @@
         reader.readAsDataURL(file);
     };
 
+    // 將 AI 回傳的 Markdown 轉成安全的 HTML（先跳脫所有 HTML，再套用格式）
+    window.renderAiMarkdown = function(text) {
+        const esc = v => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        const inline = v => esc(v).replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold text-slate-900">$1</strong>');
+        let src = String(text).replace(/\r\n/g, '\n');
+        if (!src.includes('\n')) {
+            src = src.replace(/\s(#{1,4}\s)/g, '\n$1').replace(/\s---\s/g, '\n---\n').replace(/\s\*\s(?=\S)/g, '\n* ');
+        }
+        const out = [];
+        let inList = false;
+        const closeList = () => { if (inList) { out.push('</ul>'); inList = false; } };
+        src.split('\n').forEach(raw => {
+            const line = raw.trim();
+            if (!line) { closeList(); return; }
+            let m;
+            if (/^-{3,}$/.test(line)) { closeList(); out.push('<hr class="my-3 border-indigo-200">'); }
+            else if ((m = line.match(/^#{1,4}\s+(.*)$/))) { closeList(); out.push('<h5 class="font-bold text-slate-900 text-sm mt-3 mb-1">' + inline(m[1]) + '</h5>'); }
+            else if ((m = line.match(/^[*\-\u2022]\s+(.*)$/))) {
+                if (!inList) { out.push('<ul class="list-disc pl-5 space-y-1">'); inList = true; }
+                out.push('<li>' + inline(m[1]) + '</li>');
+            }
+            else { closeList(); out.push('<p class="mb-1">' + inline(line) + '</p>'); }
+        });
+        closeList();
+        return out.join('');
+    };
+
     window.handleConsentChange = function(box) {
         const status = document.getElementById('aiStatus');
         if (box.checked) {
@@ -1241,7 +1268,7 @@
             if (!response.ok) throw new Error((payload.message || (response.status === 404 ? '伺服器尚未設定 AI 分析端點。' : '伺服器回應錯誤。')) + ` [HTTP ${response.status}｜${AI_VISION_ENDPOINT}]`);
             const text = typeof payload === 'string' ? payload : (payload.result || payload.analysis || payload.text);
             if (!text) throw new Error('AI 服務沒有回傳分析結果，請稍後再試。');
-            resultText.textContent = text;
+            resultText.innerHTML = renderAiMarkdown(text);
             resultArea.classList.remove('hidden');
             showAiStatus('分析完成。以下是 AI 參考資訊，不能取代醫療診斷。若情況可能緊急，請立即聯絡當地緊急服務（台灣 119）。', 'success');
         } catch (error) {
