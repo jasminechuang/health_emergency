@@ -417,6 +417,7 @@
                     <span>開始 AI 智慧分析</span>
                 </button>
 
+                <div id="aiStatus" role="status" aria-live="polite" class="hidden text-xs rounded-xl p-3"></div>
                 <div id="aiLoading" class="hidden text-center py-6">
                     <i class="fa-solid fa-spinner fa-spin text-2xl text-indigo-600 mb-2"></i>
                     <p class="text-xs text-slate-600 font-medium">AI 正在仔細分析照片內容，請稍候...</p>
@@ -1069,6 +1070,8 @@
 
         let selectedBase64Image = null;
         let selectedMimeType = 'image/jpeg';
+        // Set this to a same-origin server endpoint; never put a provider API key in this page.
+        const AI_VISION_ENDPOINT = '/api/vision/analyze';
         localStorage.removeItem('geminiVisionApiKey');
         let symptomRecords = [];
         try {
@@ -1083,7 +1086,12 @@
             const file = event.target.files[0];
             if (!file) return;
             if (!file.type.startsWith('image/')) {
-                alert('請選擇圖片檔案。');
+                showAiStatus('請選擇有效的圖片檔案（JPG、PNG 等），再重新拍攝或選取。', 'error');
+                event.target.value = '';
+                return;
+            }
+            if (file.size > 15 * 1024 * 1024) {
+                showAiStatus('照片超過 15 MB，請縮小照片或改用較低解析度拍攝後重試。', 'error');
                 event.target.value = '';
                 return;
             }
@@ -1096,17 +1104,63 @@
                 const prevCont = document.getElementById('imagePreviewContainer');
                 prevCont.classList.remove('hidden');
                 document.getElementById('previewImg').src = base64Full;
+                document.getElementById('aiResultArea').classList.add('hidden');
+                showAiStatus('照片已就緒。按「開始 AI 智慧分析」送出分析。照片僅暫存在此頁面記憶體中。', 'success');
+            };
+            reader.onerror = function() {
+                selectedBase64Image = null;
+                showAiStatus('無法讀取這張照片。請重新拍攝或從裝置選取其他圖片。', 'error');
+                event.target.value = '';
             };
             reader.readAsDataURL(file);
         };
 
+        window.showAiStatus = function(message, type) {
+            const status = document.getElementById('aiStatus');
+            status.textContent = message;
+            status.className = 'text-xs rounded-xl p-3 ' + (type === 'error' ? 'bg-rose-50 text-rose-800 border border-rose-200' : type === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-indigo-50 text-indigo-800 border border-indigo-200');
+        };
+
         window.analyzeImageWithAI = async function() {
             if (!selectedBase64Image) {
-                alert("請先上傳或拍攝一張照片！");
+                showAiStatus('請先點擊照片區拍攝或選取一張圖片。若相機未開啟，請確認瀏覽器相機權限，或改用上傳照片。', 'error');
                 return;
             }
-
-            alert('照片分析服務尚未設定。請先由管理者在伺服器端設定安全的 AI API 連線後再使用。');
+            if (!AI_VISION_ENDPOINT || AI_VISION_ENDPOINT === '/api/vision/analyze' && location.protocol === 'file:') {
+                showAiStatus('照片已選取，但此部署尚未設定 AI 分析服務。請管理者設定同源 /api/vision/analyze 伺服器端點；直接以本機檔案開啟時也無法連線。照片尚未送出。', 'error');
+                return;
+            }
+            const button = document.getElementById('analyzeBtn');
+            const loading = document.getElementById('aiLoading');
+            const resultArea = document.getElementById('aiResultArea');
+            const resultText = document.getElementById('aiResultText');
+            button.disabled = true;
+            button.classList.add('opacity-60', 'cursor-wait');
+            loading.classList.remove('hidden');
+            resultArea.classList.add('hidden');
+            showAiStatus('正在安全連線並分析照片，請稍候…', 'info');
+            try {
+                const response = await fetch(AI_VISION_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'same-origin',
+                    body: JSON.stringify({ image: selectedBase64Image, mimeType: selectedMimeType, prompt: document.getElementById('aiUserPrompt').value.trim() })
+                });
+                const payload = await response.json().catch(() => ({}));
+                if (!response.ok) throw new Error(payload.message || (response.status === 404 ? '伺服器尚未設定 AI 分析端點。' : `伺服器回應錯誤（${response.status}）。`));
+                const text = typeof payload === 'string' ? payload : (payload.result || payload.analysis || payload.text);
+                if (!text) throw new Error('AI 服務沒有回傳分析結果，請稍後再試。');
+                resultText.textContent = text;
+                resultArea.classList.remove('hidden');
+                showAiStatus('分析完成。以下內容僅供參考；若傷勢嚴重或快速惡化，請立即就醫。', 'success');
+            } catch (error) {
+                const message = error.name === 'TypeError' ? '無法連線至 AI 分析服務。請確認網路連線，並請管理者檢查伺服器端點設定後重試。' : error.message;
+                showAiStatus(message + ' 照片只在本次請求中使用，請稍後重試或改由專業醫療人員評估。', 'error');
+            } finally {
+                loading.classList.add('hidden');
+                button.disabled = false;
+                button.classList.remove('opacity-60', 'cursor-wait');
+            }
         };
 
         window.saveSymptomRecord = function() {
