@@ -302,7 +302,7 @@
                     <button onclick="selectBodyPart('chest')" class="p-3 bg-slate-50 hover:bg-purple-50 border rounded-xl text-xs font-bold text-slate-800 text-left transition">🫀 胸口 / 心臟 / 呼吸喘</button>
                     <button onclick="selectBodyPart('abdomen')" class="p-3 bg-slate-50 hover:bg-purple-50 border rounded-xl text-xs font-bold text-slate-800 text-left transition">🤢 腹部 / 腸胃 / 絞痛</button>
                     <button onclick="selectBodyPart('joint')" class="p-3 bg-slate-50 hover:bg-purple-50 border rounded-xl text-xs font-bold text-slate-800 text-left transition">🦾 四肢 / 肩膀五十肩 / 關節</button>
-                    <button onclick="selectBodyPart('skin')" class="p-3 bg-slate-50 hover:bg-purple-50 border rounded-xl text-xs font-bold text-slate-800 text-left transition">🩹 皮膚 / 擦傷 / 瘀青</button>
+                    <button onclick="selectBodyPart('skin')" class="p-3 bg-slate-50 hover:bg-purple-50 border rounded-xl text-xs font-bold text-slate-800 text-left transition">🩹 皮膚 / 起疹子 / 搔癢 / 擦傷</button>
                     <button onclick="selectBodyPart('fever')" class="p-3 bg-slate-50 hover:bg-purple-50 border rounded-xl text-xs font-bold text-slate-800 text-left transition">🌡️ 全身發燒 / 疲倦感冒</button>
                 </div>
 
@@ -385,7 +385,7 @@
             
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
                 <div class="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:border-indigo-500 transition cursor-pointer relative" onclick="document.getElementById('aiImageInput').click()">
-                    <input type="file" id="aiImageInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+                    <input type="file" id="aiImageInput" accept="image/*" capture="environment" class="hidden" onchange="handleImageUpload(event)">
                     <div id="uploadPlaceholder">
                         <i class="fa-solid fa-cloud-arrow-up text-3xl text-indigo-500 mb-2"></i>
                         <h4 class="font-bold text-slate-800 text-sm mb-1">點擊上傳或拍照</h4>
@@ -400,6 +400,12 @@
                 <div>
                     <label class="block font-bold text-slate-800 text-xs mb-1">補充說明（選填，例如：這是昨天跌倒擦傷的傷口，會痛）：</label>
                     <input type="text" id="aiUserPrompt" placeholder="請描述您的狀況或問題..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl font-medium text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-800 text-xs mb-1">Gemini API 金鑰（只存於此瀏覽器）</label>
+                    <input type="password" id="aiApiKey" autocomplete="off" placeholder="貼上 Google AI Studio API 金鑰以啟用照片辨識" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl font-medium text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <p class="text-slate-500 text-[10px] mt-1">照片會傳送至 Google Gemini 分析；未設定金鑰時無法進行 AI 辨識。</p>
                 </div>
 
                 <button onclick="analyzeImageWithAI()" id="analyzeBtn" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center space-x-2">
@@ -1059,11 +1065,18 @@
 
         let selectedBase64Image = null;
         let selectedMimeType = 'image/jpeg';
+        const savedVisionKey = localStorage.getItem('geminiVisionApiKey');
+        if (savedVisionKey) document.getElementById('aiApiKey').value = savedVisionKey;
 
         window.handleImageUpload = function(event) {
             const file = event.target.files[0];
             if (!file) return;
-            selectedMimeType = file.type;
+            if (!file.type.startsWith('image/')) {
+                alert('請選擇圖片檔案。');
+                event.target.value = '';
+                return;
+            }
+            selectedMimeType = file.type === 'image/jpg' ? 'image/jpeg' : file.type;
             const reader = new FileReader();
             reader.onload = function(e) {
                 const base64Full = e.target.result;
@@ -1082,7 +1095,13 @@
                 return;
             }
 
-            const promptText = document.getElementById('aiUserPrompt').value.trim() || "請分析這張照片的傷口或狀況，並提供專業急救與護理建議。";
+            const apiKey = document.getElementById('aiApiKey').value.trim();
+            if (!apiKey) {
+                alert('請先輸入 Gemini API 金鑰，才能使用照片辨識。');
+                return;
+            }
+            localStorage.setItem('geminiVisionApiKey', apiKey);
+            const promptText = document.getElementById('aiUserPrompt').value.trim() || "請辨識照片中的可見症狀（包含起疹子、紅腫、傷口），提供可能原因、可做的初步處理及何時應就醫。";
             const loadingEl = document.getElementById('aiLoading');
             const resultArea = document.getElementById('aiResultArea');
             const resultText = document.getElementById('aiResultText');
@@ -1090,7 +1109,6 @@
             loadingEl.classList.remove('hidden');
             resultArea.classList.add('hidden');
 
-            const apiKey = "";
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
 
             const payload = {
@@ -1098,7 +1116,7 @@
                     {
                         role: "user",
                         parts: [
-                            { text: "你是一位專業的急救與醫療諮詢助手。請根據以下用戶上傳的照片與補充說明進行分析，提供可能的狀況評估、處理步驟與何時需就醫的警示：" + promptText },
+                            { text: "你是提供一般衛教的助手，不能確診或取代醫師。僅描述照片可見特徵，避免從影像斷言疾病，列出不超過三項可能性、溫和安全的初步處理、需要就醫的時機。若皮疹伴隨呼吸困難、臉舌腫脹、昏厥或快速惡化，立即打119。補充說明：" + promptText },
                             {
                                 inlineData: {
                                     mimeType: selectedMimeType,
@@ -1133,7 +1151,8 @@
                 const candidate = result.candidates?.[0];
                 if (candidate && candidate.content?.parts?.[0]?.text) {
                     const text = candidate.content.parts[0].text;
-                    resultText.innerHTML = text.replace(/\n/g, '<br>');
+                    resultText.textContent = text;
+                    resultText.style.whiteSpace = 'pre-line';
                     resultArea.classList.remove('hidden');
                 } else {
                     resultText.textContent = "無法解析 AI 回應，請稍後再試。";
@@ -1295,7 +1314,13 @@
                 return;
             }
             if (area) area.classList.remove('hidden');
-            if (q.includes('頭') || q.includes('暈')) {
+            if (/(疹|紅點|紅斑|紅腫|搔癢|發癢|蕁麻疹|水泡|皮膚癢)/.test(q)) {
+                title.textContent = "分析結果：皮膚疹子／搔癢";
+                desc.innerHTML = "可能原因包括接觸刺激、蚊蟲叮咬、蕁麻疹或感染等，單靠文字或照片無法確診。<br><strong>初步處理：</strong>停止接觸可疑的新用品或食物、以清水輕柔清潔、冷敷止癢，避免抓破或自行塗不明藥膏。記錄開始時間、擴散情形及新用藥。<br><strong>建議：</strong>反覆、擴散或持續不退，安排家醫科／皮膚科評估。若呼吸困難、嘴唇舌頭腫、暈厥或迅速惡化，立即撥打 119。";
+            } else if (/(呼吸困難|喘不過氣|昏厥|失去意識|嘴唇發紫)/.test(q)) {
+                title.textContent = "⚠️ 可能為緊急狀況";
+                desc.innerHTML = "請立即撥打 119，告知症狀及地址；不要自行開車前往。";
+            } else if (q.includes('頭') || q.includes('暈')) {
                 title.textContent = "分析結果：頭部 / 腦神經相關";
                 desc.innerHTML = "可能病因：偏頭痛、緊張性頭痛、前庭神經炎、血壓波動。<br><strong>建議科別：</strong>神經內科、家醫科。<br><strong>日常護理：</strong>多喝溫水、避免熬夜、按壓百會穴與風池穴。";
             } else if (q.includes('胸') || q.includes('喘')) {
@@ -1330,7 +1355,7 @@
                 desc.innerHTML = "常見原因：五十肩關節沾黏、肌腱炎、運動拉傷。<br><strong>建議科別：</strong>復健科 / 骨科。<br><strong>建議護理：</strong>溫熱敷與爬牆運動。";
             } else if (part === 'skin') {
                 title.textContent = "🩹 皮膚 / 擦傷 / 瘀青分析";
-                desc.innerHTML = "常見原因：外傷擦傷、皮下微血管破裂。<br><strong>建議科別：</strong>皮膚科 / 外科。<br><strong>建議護理：</strong>生理食鹽水清洗、人工皮覆蓋、48小時內冰敷。";
+                desc.innerHTML = "可能原因包括擦傷、瘀青、接觸刺激或蕁麻疹等，需依外觀與病史判斷。<br><strong>建議護理：</strong>擦傷以清水沖洗並覆蓋乾淨敷料；皮疹可冷敷、避免抓搔及停用可疑刺激物。<br><strong>就醫警訊：</strong>紅腫快速擴散、劇痛、化膿、發燒，或伴隨呼吸困難／臉舌腫脹，請儘速就醫；嚴重過敏反應立即打119。";
             } else if (part === 'fever') {
                 title.textContent = "🌡️ 全身發燒 / 疲倦感冒分析";
                 desc.innerHTML = "常見原因：感冒病毒感染、流感、免疫系統發炎。<br><strong>建議科別：</strong>家醫科 / 耳鼻喉科。<br><strong>建議護理：</strong>多補充水分與維生素C。";
