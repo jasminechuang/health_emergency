@@ -1,7 +1,0 @@
-﻿{
-  "functions": {
-    "api/vision/analyze.js": {
-      "maxDuration": 30
-    }
-  }
-}
