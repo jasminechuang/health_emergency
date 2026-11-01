@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>全方位健康急救與車禍指南（完整精裝版）</title>
+    <meta name="theme-color" content="#0f766e">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="健康急救">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -27,6 +34,7 @@
     </style>
 </head>
 <body class="text-slate-900 antialiased min-h-screen flex flex-col justify-between">
+    <div id="appBanner" class="hidden fixed top-0 inset-x-0 z-[9999] text-white text-xs font-bold text-center py-1.5 px-3" role="status"></div>
 
   <!-- 首次開啟歡迎導覽彈跳視窗 -->
 <div id="welcomeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 hidden">
@@ -396,7 +404,7 @@
     <!-- 視圖：AI 拍照查詢功能 -->
     <div id="view-aiVision" class="view-section hidden">
         <div class="flex items-center gap-2 mb-1"><button type="button" onclick="switchMainView('home')" aria-label="回首頁" title="回首頁" class="shrink-0 inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold shadow"><i class="fa-solid fa-arrow-left"></i><span>首頁</span></button><h2 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">📸 AI 智慧分析：症狀、傷口、皮膚與藥膏／藥品</h2></div>
-        <p class="text-slate-500 text-xs mb-4">可上傳任何身體症狀（傷口、皮疹、紅腫、眼耳口鼻、指甲…）或藥膏、藥品包裝的照片，也可只用文字描述症狀。AI 會提供觀察、可能的常見原因、居家照護與就醫警訊。</p>
+        <p class="text-slate-500 text-xs mb-4">可上傳任何身體症狀（傷口、皮疹、紅腫、眼耳口鼻、指甲…）或藥膏、藥品包裝的照片，也可只用文字描述症狀。AI 會提供觀察、可能的常見原因、居家照護、讓症狀改善的方法（含可考慮的非處方藥膏類型）與就醫警訊。</p>
         <div class="mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 leading-relaxed">
             <strong>照片隱私：</strong>只有在您勾選下方同意並按下分析後，照片才會經網站後端傳送至 Google Gemini。網站不會保存照片；Google 對免費層提交內容的資料處理方式請參閱其政策。請勿上傳可識別個人身分的照片。
         </div>
@@ -1466,7 +1474,8 @@ window.KB_LIFE = {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    let selectedBase64Image = null;
+    let selectedBlob = null;          // 只保留壓縮後的小檔 Blob，送出前才轉 base64
+    let previewObjectUrl = null;
     let selectedMimeType = 'image/jpeg';
     const AI_VISION_ENDPOINT = 'https://healthemergency.vercel.app/api/vision/analyze'; // 固定使用正式網域，不再讀取 ai-vision-config.js
     localStorage.removeItem('geminiVisionApiKey');
@@ -1479,53 +1488,95 @@ window.KB_LIFE = {
     }
     document.addEventListener('DOMContentLoaded', function() { window.renderSymptomRecords(); });
 
-    window.handleImageUpload = function(event) {
-        const file = event.target.files[0];
+    // ===== 照片處理（省記憶體版）=====
+    // 舊版會把原始大圖整張轉成 base64 字串、再重複繪製與轉檔，手機瀏覽器在背景時容易因記憶體不足而重新載入頁面。
+    // 現在：縮到最長邊 1280px、以 Blob 保存、預覽使用 objectURL，並立即釋放畫布與解碼後的圖片。
+    const AI_IMAGE_MAX_SIDE = 1280;
+    const blobToBase64 = blob => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result).split(',')[1] || '');
+        reader.onerror = () => reject(new Error('無法讀取照片'));
+        reader.readAsDataURL(blob);
+    });
+    async function decodeImage(file) {
+        if (window.createImageBitmap) {
+            try {
+                const bmp = await createImageBitmap(file);
+                return { el: bmp, width: bmp.width, height: bmp.height, release() { try { bmp.close(); } catch (e) {} } };
+            } catch (e) { /* 改用 Image 解碼 */ }
+        }
+        const url = URL.createObjectURL(file);
+        try {
+            const img = await new Promise((resolve, reject) => {
+                const i = new Image();
+                i.onload = () => resolve(i);
+                i.onerror = reject;
+                i.src = url;
+            });
+            return { el: img, width: img.naturalWidth, height: img.naturalHeight, release() { img.src = ''; } };
+        } finally {
+            URL.revokeObjectURL(url);
+        }
+    }
+    async function compressToJpegBlob(file) {
+        const dec = await decodeImage(file);
+        const canvas = document.createElement('canvas');
+        try {
+            let scale = Math.min(1, AI_IMAGE_MAX_SIDE / Math.max(dec.width, dec.height));
+            let blob = null;
+            for (let attempt = 0; attempt < 4; attempt++) {
+                canvas.width = Math.max(1, Math.round(dec.width * scale));
+                canvas.height = Math.max(1, Math.round(dec.height * scale));
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(dec.el, 0, 0, canvas.width, canvas.height);
+                blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', attempt === 0 ? 0.8 : 0.65));
+                if (blob && blob.size <= 2000000) break;
+                scale *= 0.8;
+            }
+            if (!blob) throw new Error('compress failed');
+            return blob;
+        } finally {
+            dec.release();
+            canvas.width = 0;
+            canvas.height = 0;
+        }
+    }
+
+    window.handleImageUpload = async function(event) {
+        const input = event.target;
+        const file = input.files && input.files[0];
         if (!file) return;
-        selectedBase64Image = null;
-        if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-            showAiStatus('目前只支援 JPG、PNG 或 WebP 圖片，請重新選取。', 'error');
-            event.target.value = '';
+        selectedBlob = null;
+        if (file.type && !file.type.startsWith('image/')) {
+            showAiStatus('只支援圖片檔（JPG、PNG、WebP 等），請重新選取。', 'error');
+            input.value = '';
             return;
         }
         if (file.size > 15 * 1024 * 1024) {
             showAiStatus('照片超過 15 MB，請縮小照片或改用較低解析度拍攝後重試。', 'error');
-            event.target.value = '';
+            input.value = '';
             return;
         }
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const source = new Image();
-            source.onload = function() {
-                let scale = Math.min(1, 2048 / Math.max(source.naturalWidth, source.naturalHeight));
-                const canvas = document.createElement('canvas');
-                let compressed = '';
-                for (let attempt = 0; attempt < 5; attempt++) {
-                    canvas.width = Math.max(1, Math.round(source.naturalWidth * scale));
-                    canvas.height = Math.max(1, Math.round(source.naturalHeight * scale));
-                    canvas.getContext('2d').drawImage(source, 0, 0, canvas.width, canvas.height);
-                    compressed = canvas.toDataURL('image/jpeg', attempt === 0 ? 0.82 : 0.65);
-                    if (compressed.length <= 3_700_000) break;
-                    scale *= 0.8;
-                }
-                selectedBase64Image = compressed.split(',')[1];
-                selectedMimeType = 'image/jpeg';
+        showAiStatus('正在處理照片…', 'info');
+        try {
+            const blob = await compressToJpegBlob(file);
+            selectedBlob = blob;
+            selectedMimeType = 'image/jpeg';
+            if (previewObjectUrl) URL.revokeObjectURL(previewObjectUrl);
+            previewObjectUrl = URL.createObjectURL(blob);
             document.getElementById('uploadPlaceholder').classList.add('hidden');
-            const prevCont = document.getElementById('imagePreviewContainer');
-            prevCont.classList.remove('hidden');
-            document.getElementById('previewImg').src = compressed;
+            document.getElementById('imagePreviewContainer').classList.remove('hidden');
+            document.getElementById('previewImg').src = previewObjectUrl;
             document.getElementById('aiResultArea').classList.add('hidden');
             showAiStatus('照片已就緒，將在您同意並開始分析後傳送。照片只暫存在本頁面記憶體中。', 'success');
-            };
-            source.onerror = function() { showAiStatus('無法解讀這張圖片，請重新選取其他照片。', 'error'); };
-            source.src = e.target.result;
-        };
-        reader.onerror = function() {
-            selectedBase64Image = null;
-            showAiStatus('無法讀取這張照片。請重新拍攝或從裝置選取其他圖片。', 'error');
-            event.target.value = '';
-        };
-        reader.readAsDataURL(file);
+        } catch (err) {
+            selectedBlob = null;
+            showAiStatus('無法解讀這張圖片（可能是不支援的格式），請改用 JPG／PNG 或重新拍攝。', 'error');
+        } finally {
+            input.value = '';   // 釋放檔案參照，也讓同一張照片可再次選取
+        }
     };
 
     // 將 AI 回傳的 Markdown 轉成安全的 HTML（先跳脫所有 HTML，再套用格式）
@@ -1574,12 +1625,16 @@ window.KB_LIFE = {
 
     window.analyzeImageWithAI = async function() {
         const typedPrompt = document.getElementById('aiUserPrompt').value.trim();
-        if (!selectedBase64Image && !typedPrompt) {
+        if (!selectedBlob && !typedPrompt) {
             showAiStatus('請上傳或拍攝一張照片，或在下方文字欄描述您的症狀後再分析。', 'error');
             return;
         }
         if (!document.getElementById('aiConsent').checked) {
             showAiStatus('尚未取得同意。勾選同意傳送照片至 Google Gemini 後，才會上傳任何資料。', 'error');
+            return;
+        }
+        if (!navigator.onLine) {
+            showAiStatus('目前沒有網路連線，AI 分析需要連線才能使用。疾病大百科、急救指南等內容仍可離線查看。', 'error');
             return;
         }
         if (!AI_VISION_ENDPOINT || (AI_VISION_ENDPOINT === '/api/vision/analyze__never' && (location.protocol === 'file:' || location.hostname.endsWith('github.io')))) {
@@ -1596,11 +1651,13 @@ window.KB_LIFE = {
         resultArea.classList.add('hidden');
         showAiStatus('正在安全連線並分析，請稍候…', 'info');
         try {
+            const imageB64 = selectedBlob ? await blobToBase64(selectedBlob) : '';
             const response = await fetch(AI_VISION_ENDPOINT, {
                 method: 'POST',
+                signal: (window.AbortSignal && AbortSignal.timeout) ? AbortSignal.timeout(45000) : undefined,
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'same-origin',
-                body: JSON.stringify({ image: selectedBase64Image || undefined, mimeType: selectedBase64Image ? selectedMimeType : undefined, prompt: typedPrompt, mode: document.getElementById('aiMode').value, age: document.getElementById('aiAge').value })
+                body: JSON.stringify({ image: imageB64 || undefined, mimeType: imageB64 ? selectedMimeType : undefined, prompt: typedPrompt, mode: document.getElementById('aiMode').value, age: document.getElementById('aiAge').value })
             });
             const payload = await response.json().catch(() => ({}));
             if (!response.ok) throw new Error((payload.message || (response.status === 404 ? '伺服器尚未設定 AI 分析端點。' : '伺服器回應錯誤。')) + ` [HTTP ${response.status}｜${AI_VISION_ENDPOINT}]`);
@@ -1610,7 +1667,7 @@ window.KB_LIFE = {
             resultArea.classList.remove('hidden');
             showAiStatus('分析完成。以下是 AI 參考資訊，不能取代醫療診斷。若情況可能緊急，請立即聯絡當地緊急服務（台灣 119）。', 'success');
         } catch (error) {
-            const message = error.name === 'TypeError' ? `無法連線至 AI 分析服務（可能是網路、CORS 或 ALLOWED_ORIGIN 設定問題）。[${AI_VISION_ENDPOINT}]` : error.message;
+            const message = (error.name === 'TimeoutError' || error.name === 'AbortError') ? '分析逾時，請檢查網路後再試。' : error.name === 'TypeError' ? `無法連線至 AI 分析服務（可能是網路、CORS 或 ALLOWED_ORIGIN 設定問題）。[${AI_VISION_ENDPOINT}]` : error.message;
             showAiStatus(message + ' 照片只在本次請求中使用，請稍後重試或改由專業醫療人員評估。', 'error');
         } finally {
             loading.classList.add('hidden');
@@ -2201,6 +2258,45 @@ window.KB_LIFE = {
             d.map(e => row(e, 'diseases', 'indigo', '疾病大百科・' + kbEsc(e.system))).join('') +
             l.map(e => row(e, 'lifeStage', 'rose', '全齡疾病・' + kbEsc(e.area))).join(''));
     };
+
+
+    // ===== 離線功能（Service Worker）與連線狀態提示 =====
+    (function() {
+        const banner = document.getElementById('appBanner');
+        let hideTimer = null;
+        function showBanner(text, color, autoHideMs) {
+            if (!banner) return;
+            banner.textContent = text;
+            banner.className = 'fixed top-0 inset-x-0 z-[9999] text-white text-xs font-bold text-center py-1.5 px-3 ' + color;
+            clearTimeout(hideTimer);
+            if (autoHideMs) hideTimer = setTimeout(() => banner.classList.add('hidden'), autoHideMs);
+        }
+        function updateOnlineState(initial) {
+            if (!navigator.onLine) {
+                showBanner('目前離線：疾病百科、急救指南等內容可正常查看；AI 分析需要網路。', 'bg-amber-600', 0);
+            } else if (!initial) {
+                showBanner('已恢復連線', 'bg-emerald-600', 2500);
+            }
+        }
+        window.addEventListener('offline', () => updateOnlineState(false));
+        window.addEventListener('online', () => updateOnlineState(false));
+        updateOnlineState(true);
+
+        if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('./sw.js').then(function() {
+                    return navigator.serviceWorker.ready;
+                }).then(function() {
+                    try {
+                        if (!localStorage.getItem('offlineReadyShown')) {
+                            localStorage.setItem('offlineReadyShown', '1');
+                            showBanner('已完成離線準備，之後沒有網路也能查看內容', 'bg-emerald-600', 4000);
+                        }
+                    } catch (e) {}
+                }).catch(function() { /* 離線功能不可用時不影響其他功能 */ });
+            });
+        }
+    })();
 
 </script>
 </body>
